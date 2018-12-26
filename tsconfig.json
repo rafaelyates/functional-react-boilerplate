@@ -1,0 +1,54 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    /* Module Resolution Options */
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "rootDir": "./src",
+    "outDir": "./dist",
+    /* Basic Options */
+    "module": "esnext",
+    "target": "es6",
+    "pretty": true,
+    "emitBOM": true,
+    "noEmit": false,
+    "sourceMap": true,
+    "removeComments": true,
+    "declaration": false,
+    "skipLibCheck": false,
+    "isolatedModules": false,
+    "preserveConstEnums": true,
+    /* React Options */
+    "jsx": "preserve",
+    /* TypeScript helper functions */
+    "importHelpers": true,
+    /* Strict Type-Checking Options */
+    "strict": true,
+    "alwaysStrict": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": false,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "forceConsistentCasingInFileNames": true,
+    /* Additional Checks */
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noFallthroughCasesInSwitch": true,
+    "allowSyntheticDefaultImports": true,
+    /* Experimental Options */
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    /* Libraries */
+    "lib": [
+      "esnext",
+      "esnext.asynciterable",
+      "dom",
+      "dom.iterable"
+    ],
+    "paths": {
+      "@app/*": ["src/app/*"],
+      "@conf/*": ["src/config/*"]
+    }
+  }
+}

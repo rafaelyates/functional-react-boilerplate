@@ -1,0 +1,62 @@
+{
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-css-modules",
+    "stylelint-config-recommended",
+    "stylelint-config-recommended-scss"
+  ],
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "syntax": "scss",
+  "ignoreFiles": "./dist/**",
+  "rules": {
+    "font-family-name-quotes": "always-where-recommended",
+    "function-url-quotes": [
+      "always",
+      {
+        "except": ["empty"]
+      }
+    ],
+    "selector-attribute-quotes": "always",
+    "string-quotes": "single",
+    "declaration-no-important": true,
+    "at-rule-no-vendor-prefix": true,
+    "media-feature-name-no-vendor-prefix": true,
+    "comment-no-empty": true,
+    "declaration-block-no-duplicate-properties": [
+      true,
+      {
+        "ignore": ["consecutive-duplicates-with-different-values"]
+      }
+    ],
+    "property-no-vendor-prefix": true,
+    "selector-no-vendor-prefix": true,
+    "value-no-vendor-prefix": true,
+    "no-empty-source": true,
+    "unit-no-unknown": true,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      {
+        "ignorePseudoClasses": ["export", "import", "global", "local"]
+      }
+    ],
+    "selector-class-pattern": "[a-z-]+",
+    "selector-id-pattern": "[a-z-]+",
+    "selector-max-id": 0,
+    "selector-no-qualifying-type": true,
+    "selector-max-universal": 0,
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": ["global", "local"]
+      }
+    ],
+    "unit-whitelist": ["px", "%", "em", "rem", "vw", "vh", "deg", "s"],
+    "max-nesting-depth": 3,
+    "selector-max-compound-selectors": 3,
+    "selector-max-specificity": "0,3,2",
+    "max-empty-lines": 2,
+    "max-line-length": 120
+  }
+}
