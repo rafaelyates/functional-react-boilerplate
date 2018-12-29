@@ -6,11 +6,11 @@ import { dummyReducer } from '@app/dummy/dummy.reducer';
 import { routerReducer } from '@conf/routing.config';
 
 interface IAppState {
-  readonly dummy: Reducer<IDummyPayload>;
+  readonly dummy: IDummyPayload;
   readonly router: RouterState;
 }
 
-const reducers: Reducer = combineReducers<IAppState>({
+const reducers: Reducer<IAppState> = combineReducers({
   dummy: dummyReducer,
   router: routerReducer
 });
