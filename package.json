@@ -12,18 +12,19 @@
     "lint:style": "stylelint \"src/**/*.scss\" --syntax scss",
     "start": "cross-env NODE_ENV=development webpack-dev-server --progress --colors --inline --mode development",
     "build": "cross-env NODE_ENV=production webpack --progress --colors --inline --mode production",
-    "serve": "http-server ./dist -p 8080 --cors"
+    "serve:dist": "http-server ./dist -p 8080 --cors"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.2.1",
+    "connected-react-router": "^6.1.0",
     "core-js": "^2.5.7",
     "immutable": "^4.0.0-rc.12",
     "intl": "^1.2.5",
     "lodash": "^4.17.11",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "react-redux": "^5.1.1",
+    "react-redux": "^6.0.0",
     "react-router": "^4.3.1",
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.1",
