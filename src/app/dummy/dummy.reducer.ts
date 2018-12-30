@@ -1,19 +1,36 @@
 import { Reducer } from 'redux';
 import { Action, handleActions } from 'redux-actions';
 
-import { DummyActions } from '@app/dummy/dummy.actions';
-import { IDummyPayload } from '@app/dummy/dummy.payload';
+import { DummyActionTypes } from '@app/dummy/dummy.actions';
+import { DummyPayload, IDummyState } from '@app/dummy/dummy.models';
+import { ReducerFunction } from '@app/shared/models/function.models';
 
-const initialState: IDummyPayload = {
+/**
+ * The fallback state.
+ */
+const initialState: IDummyState = {
   name: ''
 };
 
-const actionsRecord: Record<DummyActions, (state: IDummyPayload, action: Action<IDummyPayload>) => IDummyPayload> = {
-  [DummyActions.NAME_SETUP]: (state: IDummyPayload, action: Action<IDummyPayload>) => {
-    const name: string | undefined = action.payload ? action.payload.name : undefined;
+/**
+ * Function invoked when a {@link DummyActionTypes.NAME_SETUP} action has been dispatched.
+ * @param state The current state.
+ * @param action The action with the modification payload.
+ */
+const handleNameSetup: ReducerFunction<IDummyState> = (state: IDummyState, action: Action<DummyPayload>) => {
 
-    return { ...state, name };
-  }
+  const name: string | undefined = action.payload && action.payload.data
+    ? action.payload.data.items[0].name
+    : undefined;
+
+  return { ...state, name };
+};
+
+/**
+ * Maps all the actions to it's corresponding reducer functions, always delivering a state.
+ */
+const actionsRecord: Record<DummyActionTypes, ReducerFunction<IDummyState>> = {
+  [DummyActionTypes.NAME_SETUP]: handleNameSetup
 };
 
 const dummyReducer: Reducer = handleActions(actionsRecord, initialState);

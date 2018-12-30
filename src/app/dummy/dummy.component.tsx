@@ -1,32 +1,32 @@
+import { clone } from 'lodash/fp';
 import React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 
-import { setupName } from '@app/dummy/dummy.actions';
+import { dummyActions } from '@app/dummy/dummy.actions';
+import { IDummyActions, IDummyState } from '@app/dummy/dummy.models';
 import dummyStyle from '@app/dummy/dummy.module.scss';
 import { IAppState } from '@conf/reducers.config';
 
-declare type Props = IDummyComponentState & IDummyComponentDispatch;
-declare type ConnectedDummyComponent = ConnectedComponentClass<React.FunctionComponent<Props>, Pick<Props, never>>;
+declare type DummyProps = IDummyState & IDummyActions;
+declare type ConnectedDummyComponent = ConnectedComponentClass<React.FunctionComponent<DummyProps>, Pick<DummyProps, never>>;
 
-interface IDummyComponentState {
-  readonly name?: string;
-}
+/**
+ * Maps the received state to the component properties.
+ * @param state The new state.
+ */
+const mapStateToProps: (state: IAppState) => IDummyState = (state: IAppState) => clone(state.dummy);
 
-interface IDummyComponentDispatch {
-  readonly setupName: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}
+/**
+ * Maps the received actions to the component properties.
+ * @param dispatch The actions.
+ */
+const mapDispatchToProps: (dispatch: Dispatch) => IDummyActions = (dispatch: Dispatch) => bindActionCreators({ ...dummyActions }, dispatch);
 
-const mapStateToProps: (state: IAppState) => IDummyComponentState = (state: IAppState) => ({
-  name: state.dummy.name
-});
-
-const mapDispatchToProps: (dispatch: Dispatch) => IDummyComponentDispatch = (dispatch: Dispatch) => bindActionCreators(
-  { setupName },
-  dispatch
-);
-
-const component: React.FunctionComponent<Props> = React.memo((props: Props) => (
+/**
+ * The functional component.
+ */
+const component: React.FunctionComponent<DummyProps> = React.memo((props: DummyProps) => (
   <div className='row'>
     <div className='col-md-auto'>
 
@@ -38,6 +38,9 @@ const component: React.FunctionComponent<Props> = React.memo((props: Props) => (
   </div>
 ));
 
+/**
+ * Connects the component with the redux.
+ */
 const DummyComponent: ConnectedDummyComponent = connect(mapStateToProps, mapDispatchToProps)(component);
 
 export { DummyComponent };

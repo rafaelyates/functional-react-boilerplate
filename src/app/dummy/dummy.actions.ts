@@ -1,22 +1,35 @@
 import { ChangeEvent, Dispatch } from 'react';
-import { ActionCreator } from 'redux';
 import { Action, createAction } from 'redux-actions';
 
-import { IDummyPayload } from '@app/dummy/dummy.payload';
+import { DummyPayload, IDummyActions } from '@app/dummy/dummy.models';
+import { ActionFunction } from '@app/shared/models/function.models';
 
-declare type ActionFunction<T> = (parameter: T) => ActionCreator<void>;
-
-enum DummyActions {
+/**
+ * Enumerates the possible dispatch actions.
+ */
+enum DummyActionTypes {
   NAME_SETUP = 'NAME_SETUP'
 }
 
+/**
+ * Function invoked to a {@link DummyActionTypes.NAME_SETUP} action.
+ * @param event The change event of a input text html element.
+ */
 const setupName: ActionFunction<ChangeEvent<HTMLInputElement>> = (event: ChangeEvent<HTMLInputElement>) => {
 
-  const nameAction: Action<IDummyPayload> = createAction(DummyActions.NAME_SETUP, (name: string) => ({
-    name
+  const nameAction: Action<DummyPayload> = createAction(DummyActionTypes.NAME_SETUP, (name: string) => ({
+    id: 'MOCKED_DATA',
+    data: {
+      items: [{ name }]
+    }
   }))(event.target.value);
 
-  return (dispatch: Dispatch<Action<IDummyPayload>>) => dispatch(nameAction);
+  return (dispatch: Dispatch<Action<DummyPayload>>) => dispatch(nameAction);
 };
 
-export { DummyActions, setupName };
+/**
+ * Object used to store all the dispatch actions.
+ */
+const dummyActions: IDummyActions = { setupName };
+
+export { DummyActionTypes, dummyActions };

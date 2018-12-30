@@ -128,7 +128,7 @@
     "no-unused-expression": true,
     "no-var-keyword": true,
     "no-void-expression": false,
-    "object-literal-sort-keys": true,
+    "object-literal-sort-keys": false,
     "only-arrow-functions": true,
     "one-line": [
       true,
