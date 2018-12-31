@@ -2,8 +2,6 @@
 
 const path = require('path');
 const glob = require('glob-all');
-const cssnano = require('cssnano');
-const posthtmlParser = require('posthtml-parser');
 
 const {
   NoEmitOnErrorsPlugin,
@@ -13,34 +11,41 @@ const {
   HotModuleReplacementPlugin
 } = require('webpack');
 
-const ManifestPlugin = require('webpack-manifest-plugin');
-const WebpackPwaManifest = require('webpack-pwa-manifest');
+const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
+const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HappyPack = require('happypack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+
 const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 const TerserPlugin = require('terser-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const PurifyCSSPlugin = require('purifycss-webpack');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const HtmlMinifierPlugin = require('html-minifier-webpack-plugin');
 
 const packageJson = require('./package.json');
 const projectRoot = __dirname || process.cwd();
+
 const sourcesRoot = path.join(projectRoot, 'src');
 const destination = path.join(projectRoot, 'dist');
 const nodeModules = path.join(projectRoot, 'node_modules');
+
 const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'scripts', 'vendor', 'main'];
+const extSuffixes = ['.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.scss', '.json'];
+
 const excludePath = /node_modules/;
 
 module.exports = (env, argv) => {
@@ -86,7 +91,6 @@ module.exports = (env, argv) => {
       sourceMap: isDevMode,
     }),
     new OptimizeCSSAssetsPlugin({
-      cssProcessor: cssnano,
       cssProcessorPluginOptions: {
         preset: ['default', { discardComments: { removeAll: true } }]
       },
@@ -100,6 +104,10 @@ module.exports = (env, argv) => {
       styleExtensions: ['.scss'],
       moduleExtensions: ['.html'],
     }),
+    new HtmlMinifierPlugin({
+      html5: true,
+      caseSensitive: true,
+    })
   ];
 
   const icons = [
@@ -142,24 +150,17 @@ module.exports = (env, argv) => {
       hints: false
     },
     resolve: {
-      extensions: ['.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.scss', '.json'],
-      modules: [
-        sourcesRoot,
-        nodeModules
-      ],
+      extensions: extSuffixes,
+      modules: [sourcesRoot, nodeModules],
       mainFields: ['browser', 'module', 'main'],
       symlinks: true,
       plugins: [
-        new TsconfigPathsPlugin({
-          configFile: path.join(projectRoot, 'tsconfig.json'),
-        }),
-        new DirectoryNamedWebpackPlugin(true)
+        new TsconfigPathsPlugin({ configFile: path.join(projectRoot, 'tsconfig.json') }),
+        new DirectoryNamedWebpackPlugin(true),
       ]
     },
     resolveLoader: {
-      modules: [
-        nodeModules,
-      ],
+      modules: [nodeModules],
     },
     module: {
       strictExportPresence: true,
@@ -191,10 +192,7 @@ module.exports = (env, argv) => {
           exclude: excludePath,
           use: [
             { loader: require.resolve('html-loader') },
-            {
-              loader: require.resolve('posthtml-loader'),
-              options: { ident: 'posthtml', parser: posthtmlParser }
-            },
+            { loader: require.resolve('posthtml-loader') },
           ]
         },
         {
@@ -217,7 +215,7 @@ module.exports = (env, argv) => {
           test: /\.(ani|cur|eot|otf|ttf|woff|woff2)$/,
           use: [
             {
-              loader: require.resolve('file-loader'),
+              loader: require.resolve('ttf-loader'),
               options: { name: 'static/media/[name].[hash:8].[ext]' },
             },
           ]
