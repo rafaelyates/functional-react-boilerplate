@@ -1,11 +1,12 @@
-import { clone } from 'lodash/fp';
 import React from 'react';
 import { connect, ConnectedComponentClass } from 'react-redux';
+
 import { bindActionCreators, Dispatch } from 'redux';
+
+import dummyStyle from '@app/dummy/dummy.module.scss';
 
 import { dummyActions } from '@app/dummy/dummy.actions';
 import { IDummyActions, IDummyState } from '@app/dummy/dummy.models';
-import dummyStyle from '@app/dummy/dummy.module.scss';
 import { IAppState } from '@conf/reducers.config';
 
 declare type DummyProps = IDummyState & IDummyActions;
@@ -15,7 +16,7 @@ declare type ConnectedDummyComponent = ConnectedComponentClass<React.FunctionCom
  * Maps the received state to the component properties.
  * @param state The new state.
  */
-const mapStateToProps: (state: IAppState) => IDummyState = (state: IAppState) => clone(state.dummy);
+const mapStateToProps: (state: IAppState) => IDummyState = (state: IAppState) => ({ ...state.dummy });
 
 /**
  * Maps the received actions to the component properties.

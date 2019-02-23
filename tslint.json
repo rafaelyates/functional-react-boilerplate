@@ -3,6 +3,7 @@
     "tslint:recommended",
     "tslint-eslint-rules",
     "tslint-microsoft-contrib",
+    "tslint-consistent-codestyle",
     "tslint-react",
     "tslint-immutable"
   ],
@@ -10,6 +11,8 @@
     "node_modules/tslint/lib/rules",
     "node_modules/tslint-eslint-rules/dist/rules",
     "node_modules/tslint-microsoft-contrib",
+    "node_modules/tslint-consistent-codestyle/rules",
+    "node_modules/tslint-react/rules",
     "node_modules/tslint-immutable/rules"
   ],
   "rules": {

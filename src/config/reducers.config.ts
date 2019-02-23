@@ -1,5 +1,6 @@
-import { RouterState } from 'connected-react-router';
 import { combineReducers, Reducer } from 'redux';
+
+import { RouterState } from 'connected-react-router';
 
 import { IDummyState } from '@app/dummy/dummy.models';
 import { dummyReducer } from '@app/dummy/dummy.reducer';

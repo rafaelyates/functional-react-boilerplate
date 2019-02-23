@@ -110,6 +110,7 @@
     "tsconfig-paths-webpack-plugin": "^3.2.0",
     "tslib": "^1.9.3",
     "tslint": "^5.12.0",
+    "tslint-consistent-codestyle": "^1.15.0",
     "tslint-eslint-rules": "^5.4.0",
     "tslint-immutable": "^4.9.1",
     "tslint-microsoft-contrib": "^5.2.1",
@@ -120,7 +121,7 @@
     "url-loader": "^1.1.2",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.10",
+    "webpack-dev-server": "^3.2.0",
     "webpack-manifest-plugin": "^2.0.4",
     "webpack-pwa-manifest": "^4.0.0"
   }

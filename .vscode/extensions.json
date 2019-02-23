@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "editorconfig.editorconfig",
+    "shinnn.stylelint",
+    "eg2.tslint",
+    "rbbit.typescript-hero"
+  ]
+}

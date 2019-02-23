@@ -1,5 +1,27 @@
 {
+  "editor.renderWhitespace": "all",
+  "editor.rulers": [
+    160
+  ],
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
   "files.associations": {
     "*.stylelintrc": "json"
-  }
+  },
+  "files.trimTrailingWhitespace": true,
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+  "files.eol": "\n",
+  "typescriptHero.imports.organizeOnSave": true,
+  "typescriptHero.imports.multiLineWrapThreshold": 400,
+  "typescriptHero.imports.grouping": [
+    "/^(react)/",
+    "/^(redux)/",
+    "Plains",
+    "Modules",
+    "Workspace",
+    "/(scss)$/",
+    "/@/"
+  ],
+  "tslint.autoFixOnSave": true
 }

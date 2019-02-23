@@ -1,10 +1,12 @@
-import { ConnectedRouter } from 'connected-react-router';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
+
 import { applyMiddleware, createStore, DeepPartial, Store } from 'redux';
 import promise from 'redux-promise';
 import thunk from 'redux-thunk';
+
+import { ConnectedRouter } from 'connected-react-router';
 
 import { AppComponent } from '@app/app.component';
 import { IAppState, reducers } from '@conf/reducers.config';
