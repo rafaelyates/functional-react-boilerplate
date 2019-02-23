@@ -41,8 +41,8 @@
         "ignorePseudoClasses": ["export", "import", "global", "local"]
       }
     ],
-    "selector-class-pattern": "[a-z-]+",
-    "selector-id-pattern": "[a-z-]+",
+    "selector-class-pattern": "^[a-z][a-zA-Z0-9]+$",
+    "selector-id-pattern": "^[a-z][a-zA-Z0-9]+$",
     "selector-max-id": 0,
     "selector-no-qualifying-type": true,
     "selector-max-universal": 0,

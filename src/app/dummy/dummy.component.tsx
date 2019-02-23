@@ -31,7 +31,7 @@ const component: React.FunctionComponent<DummyProps> = React.memo((props: DummyP
   <div className='row'>
     <div className='col-md-auto'>
 
-      <h1 className={dummyStyle['name-title']}>Hello {props.name}!!</h1>
+      <h1 className={dummyStyle.nameTitle}>Hello {props.name}!!</h1>
       <label htmlFor='name' className='form-check-label'>Type your name bellow:</label>
       <input type='text' id='name' className='form-control' onChange={props.setupName} />
 
