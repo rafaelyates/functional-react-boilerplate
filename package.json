@@ -7,7 +7,7 @@
   "private": true,
   "main": "src/app.tsx",
   "scripts": {
-    "check": "npm-run-all -s lint:types lint:style",
+    "lint": "npm-run-all -s lint:types lint:style",
     "lint:types": "tslint -c tslint.json -p tsconfig.json",
     "lint:style": "stylelint \"src/**/*.scss\" --syntax scss",
     "start": "cross-env NODE_ENV=development webpack-dev-server --progress --colors --inline --mode development",
@@ -31,6 +31,7 @@
     "redux-actions": "^2.6.4",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.3.0",
+    "tslib": "^1.9.3",
     "whatwg-fetch": "^3.0.0",
     "zone.js": "^0.8.26"
   },
@@ -108,7 +109,6 @@
     "terser-webpack-plugin": "^1.1.0",
     "ts-loader": "^5.3.0",
     "tsconfig-paths-webpack-plugin": "^3.2.0",
-    "tslib": "^1.9.3",
     "tslint": "^5.12.0",
     "tslint-consistent-codestyle": "^1.15.0",
     "tslint-eslint-rules": "^5.4.0",
