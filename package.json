@@ -5,7 +5,6 @@
   "author": "Rafael Yates",
   "license": "MIT",
   "private": true,
-  "main": "src/app.tsx",
   "scripts": {
     "lint": "npm-run-all -s lint:types lint:style",
     "lint:types": "tslint -c tslint.json -p tsconfig.json",
