@@ -99,7 +99,16 @@
     "no-empty-interface": false,
     "no-eval": true,
     "no-extra-boolean-cast": true,
-    "no-expression-statement": true,
+    "no-expression-statement": [
+      true,
+      {
+        "ignore-prefix": [
+          "describe",
+          "it",
+          "expect"
+        ]
+      }
+    ],
     "no-if-statement": true,
     "no-implicit-dependencies": false,
     "no-import-side-effect": false,

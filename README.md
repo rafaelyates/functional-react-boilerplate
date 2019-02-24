@@ -7,8 +7,8 @@ Boilerplate for React JS project with the following features:
 3. Typescript code
 4. SCSS styles
 5. CSS modules
+6. Unit tests
 
 What is not done yet?
 
-1. Unit tests
-2. Integration tests
+1. Integration tests

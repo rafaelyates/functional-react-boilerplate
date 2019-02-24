@@ -6,7 +6,7 @@ import { IDummyState } from '@app/dummy/dummy.models';
 import { dummyReducer } from '@app/dummy/dummy.reducer';
 import { routerReducer } from '@conf/routing.config';
 
-interface IAppState {
+export interface IAppState {
   readonly dummy: IDummyState;
   readonly router: RouterState;
 }
@@ -16,4 +16,4 @@ const reducers: Reducer<IAppState> = combineReducers({
   router: routerReducer
 });
 
-export { IAppState, reducers };
+export { reducers };

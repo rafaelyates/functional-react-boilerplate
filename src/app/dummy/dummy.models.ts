@@ -4,14 +4,12 @@ import { ActionCreator } from 'redux';
 
 import { IPayload } from '@app/shared/models/payload.models';
 
-declare type DummyPayload = IPayload<IDummyState>;
+export declare type DummyPayload = IPayload<IDummyState>;
 
-interface IDummyState {
+export interface IDummyState {
   readonly name?: string;
 }
 
-interface IDummyActions {
+export interface IDummyActions {
   readonly setupName: (event: ChangeEvent<HTMLInputElement>) => ActionCreator<void>;
 }
-
-export { DummyPayload, IDummyState, IDummyActions };
