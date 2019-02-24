@@ -2,6 +2,8 @@
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
 
+const isUnitEnvironment = process.env.JEST_ENV === 'unit';
+
 module.exports = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -9,36 +11,36 @@ module.exports = {
   // Stop running tests after `n` failures
   // bail: 0,
 
-  // Respect "browser" field in package.json when resolving modules
+  // Respect 'browser' field in package.json when resolving modules
   // browser: false,
 
   // The directory where Jest should store its cached dependency information
-  // cacheDirectory: "C:\\Users\\vntrays\\AppData\\Local\\Temp\\jest",
+  // cacheDirectory: 'C:\\Users\\<USER>\\AppData\\Local\\Temp\\jest',
 
   // Automatically clear mock calls and instances between every test
-  // clearMocks: false,
+  clearMocks: true,
 
   // Indicates whether the coverage information should be collected while executing the test
   // collectCoverage: false,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
   collectCoverageFrom: [
-    "src/**/*.{js,jsx,ts,tsx}"
+    'src/**/*.{js,jsx,ts,tsx}'
   ],
 
   // The directory where Jest should output its coverage files
-  // coverageDirectory: null,
+  coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
   coveragePathIgnorePatterns: [
-    "/node_modules/",
-    "/dist/"
+    '/node_modules/',
+    '/dist/'
   ],
 
   // A list of reporter names that Jest uses when writing coverage reports
   coverageReporters: [
-    "json",
-    "lcov",
+    'json',
+    'lcov',
   ],
 
   // An object that configures minimum threshold enforcement for coverage results
@@ -54,34 +56,34 @@ module.exports = {
   // forceCoverageMatch: [],
 
   // A path to a module which exports an async function that is triggered once before all test suites
-  // globalSetup: null,
+  globalSetup: 'jest-environment-puppeteer/setup',
 
   // A path to a module which exports an async function that is triggered once after all test suites
-  // globalTeardown: null,
+  globalTeardown: 'jest-environment-puppeteer/teardown',
 
   // A set of global variables that need to be available in all test environments
   // globals: {},
 
   // An array of directory names to be searched recursively up from the requiring module's location
   // moduleDirectories: [
-  //   "node_modules"
+  //   'node_modules'
   // ],
 
   // An array of file extensions your modules use
   // moduleFileExtensions: [
-  //   "js",
-  //   "json",
-  //   "jsx",
-  //   "ts",
-  //   "tsx",
-  //   "node"
+  //   'js',
+  //   'json',
+  //   'jsx',
+  //   'ts',
+  //   'tsx',
+  //   'node'
   // ],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
-    "\\.(scss)$": "identity-obj-proxy",
-    "^@app/(.*)$": "<rootDir>/src/app/$1",
-    "^@conf/(.*)$": "<rootDir>/src/config/$1"
+    '\\.(scss)$': 'identity-obj-proxy',
+    '^@app/(.*)$': '<rootDir>/src/app/$1',
+    '^@conf/(.*)$': '<rootDir>/src/config/$1'
   },
 
   // An array of regexp pattern strings, matched against all module paths before considered 'visible' to the module loader
@@ -91,16 +93,18 @@ module.exports = {
   // notify: false,
 
   // An enum that specifies notification mode. Requires { notify: true }
-  // notifyMode: "failure-change",
+  // notifyMode: 'failure-change',
 
   // A preset that is used as a base for Jest's configuration
-  preset: "ts-jest",
+  preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: null,
 
   // Use this configuration option to add custom reporters to Jest
-  // reporters: undefined,
+  reporters: [
+    'jest-spec-reporter'
+  ],
 
   // Automatically reset mock state between every test
   // resetMocks: false,
@@ -119,33 +123,36 @@ module.exports = {
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
-  //   "<rootDir>"
+  //   '<rootDir>'
   // ],
 
   // Allows you to use a custom runner instead of Jest's default test runner
-  // runner: "jest-runner",
+  // runner: 'jest-runner',
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
   setupFiles: [
-    "<rootDir>/src/polyfills.ts"
+    '<rootDir>/src/polyfills.ts'
   ],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
-    "jest-enzyme"
+    'jest-enzyme',
+    'expect-puppeteer'
   ],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
   snapshotSerializers: [
-    "enzyme-to-json/serializer"
+    'enzyme-to-json/serializer'
   ],
 
   // The test environment that will be used for testing
-  testEnvironment: "enzyme",
+  testEnvironment: isUnitEnvironment
+    ? 'enzyme'
+    : 'jest-environment-puppeteer',
 
   // Options that will be passed to the testEnvironment
   testEnvironmentOptions: {
-    enzymeAdapter: "react16"
+    enzymeAdapter: 'react16'
   },
 
   // Adds a location field to test results
@@ -153,13 +160,13 @@ module.exports = {
 
   // The glob patterns Jest uses to detect test files
   // testMatch: [
-  //   "**/__tests__/**/*.[jt]s?(x)",
-  //   "**/?(*.)+(spec|test).[tj]s?(x)"
+  //   '**/__tests__/**/*.[jt]s?(x)',
+  //   '**/?(*.)+(spec|test).[tj]s?(x)'
   // ],
 
   // An array of regexp pattern strings that are matched against all test paths, matched tests are skipped
   // testPathIgnorePatterns: [
-  //   "\\\\node_modules\\\\"
+  //   '\\\\node_modules\\\\'
   // ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
@@ -169,22 +176,22 @@ module.exports = {
   // testResultsProcessor: null,
 
   // This option allows use of a custom test runner
-  // testRunner: "jasmine2",
+  // testRunner: 'jasmine2',
 
   // This option sets the URL for the jsdom environment. It is reflected in properties such as location.href
-  testURL: "http://localhost",
+  testURL: 'http://localhost',
 
-  // Setting this value to "fake" allows the use of fake timers for functions such as "setTimeout"
-  // timers: "real",
+  // Setting this value to 'fake' allows the use of fake timers for functions such as 'setTimeout'
+  // timers: 'real',
 
   // A map from regular expressions to paths to transformers
   transform: {
-    "^.+\\.tsx?$": "babel-jest"
+    '^.+\\.tsx?$': 'babel-jest'
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation
   // transformIgnorePatterns: [
-  //   "\\\\node_modules\\\\"
+  //   '\\\\node_modules\\\\'
   // ],
 
   // An array of regexp pattern strings that are matched against all modules before the module loader will automatically return a mock for them
