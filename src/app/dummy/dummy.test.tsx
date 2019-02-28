@@ -1,19 +1,25 @@
-import configureStore, { MockStoreCreator, MockStoreEnhanced } from 'redux-mock-store';
-import promise from 'redux-promise';
-import thunk from 'redux-thunk';
+import { Component, Dispatch } from 'react';
+
+import { createMockStore } from 'redux-test-utils';
 
 import { ShallowWrapper } from 'enzyme';
 import { shallowWithStore } from 'enzyme-redux';
 
 import { DummyComponent } from '@app/dummy/dummy.component';
+import { IDummyState } from '@app/dummy/dummy.models';
+import { IAppState } from '@conf/reducers.config';
 
 describe('Component: Dummy', () => {
-  const mockStoreCreator: MockStoreCreator = configureStore([thunk, promise]);
-  const store: MockStoreEnhanced = mockStoreCreator({});
+
+  const initialState: Partial<IAppState> = {
+    dummy: { name: 'kek' }
+  };
 
   it('should render without crashing', () => {
-    const wrapper: ShallowWrapper = shallowWithStore(<DummyComponent />, store);
+    const wrapper: ShallowWrapper<IDummyState> = shallowWithStore(<DummyComponent />, createMockStore(initialState));
+
     expect(wrapper).toBeDefined();
+    expect(wrapper.props().name).toBe('kek');
   });
 
 });
