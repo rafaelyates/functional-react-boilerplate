@@ -2,6 +2,7 @@
 
 const path = require('path');
 const glob = require('glob-all');
+const cssnano = require('cssnano');
 
 const {
   NoEmitOnErrorsPlugin,
@@ -20,6 +21,7 @@ const HappyPack = require('happypack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const WorkboxPlugin = require('workbox-webpack-plugin');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
@@ -57,66 +59,22 @@ module.exports = (env, argv) => {
       options: {
         modules: isModular,
         minimize: true,
-        sourceMap: isDevMode,
+        sourceMap: true,
         localIdentName: isDevMode ? '[name]_[local]' : '[hash:base64]',
       },
     },
     {
       loader: require.resolve('postcss-loader'),
-      options: { sourceMap: isDevMode }
+      options: { sourceMap: true }
     },
     {
       loader: require.resolve('resolve-url-loader'),
-      options: { sourceMap: isDevMode }
+      options: { sourceMap: true }
     },
     {
       loader: require.resolve('sass-loader'),
-      options: { sourceMap: isDevMode }
+      options: { sourceMap: true }
     }
-  ];
-
-  const minimizers = [
-    new TerserPlugin({
-      cache: true,
-      sourceMap: isDevMode,
-      extractComments: false,
-    }),
-    new UglifyJsPlugin({
-      uglifyOptions: {
-        parse: { bare_returns: true },
-        compress: { warnings: false, comparisons: true },
-        output: { comments: false, ascii_only: true },
-      },
-      cache: true,
-      sourceMap: isDevMode,
-    }),
-    new OptimizeCSSAssetsPlugin({
-      cssProcessorPluginOptions: {
-        preset: ['default', { discardComments: { removeAll: true } }]
-      },
-      canPrint: true
-    }),
-    new PurifyCSSPlugin({
-      paths: glob.sync([
-        path.join(sourcesRoot, '*.html')
-      ]),
-      minimize: true,
-      styleExtensions: ['.scss'],
-      moduleExtensions: ['.html'],
-    }),
-    new HtmlMinifierPlugin({
-      html5: true,
-      caseSensitive: true,
-    })
-  ];
-
-  const icons = [
-    {
-      src: path.join(sourcesRoot, 'favicon.ico'),
-      sizes: [16, 24, 32, 64],
-      type: 'image/x-icon',
-      destination: path.join('static', 'icons'),
-    },
   ];
 
   return ({
@@ -179,7 +137,7 @@ module.exports = (env, argv) => {
           use: [
             {
               loader: require.resolve('react-hot-loader/webpack'),
-              options: { sourceMap: isDevMode },
+              options: { sourceMap: true },
             },
             {
               loader: require.resolve('happypack/loader'),
@@ -226,7 +184,7 @@ module.exports = (env, argv) => {
           use: [
             {
               loader: MiniCssExtractPlugin.loader,
-              options: { sourceMap: isDevMode },
+              options: { sourceMap: true },
             },
             {
               loader: require.resolve('happypack/loader'),
@@ -239,7 +197,7 @@ module.exports = (env, argv) => {
           use: [
             {
               loader: isDevMode ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
-              options: { sourceMap: isDevMode },
+              options: { sourceMap: true },
             },
             {
               loader: require.resolve('happypack/loader'),
@@ -251,9 +209,48 @@ module.exports = (env, argv) => {
     },
     optimization: {
       namedModules: true,
+      namedChunks: true,
       moduleIds: 'hashed',
       minimize: !isDevMode,
-      minimizer: isDevMode ? [] : minimizers,
+      minimizer: [
+        new TerserPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true,
+          extractComments: false,
+        }),
+        new UglifyJsPlugin({
+          uglifyOptions: {
+            parse: { bare_returns: true },
+            compress: { warnings: false, comparisons: true },
+            output: { comments: false, ascii_only: true },
+          },
+          cache: true,
+          parallel: true,
+          sourceMap: true,
+        }),
+        new OptimizeCSSAssetsPlugin({
+          assetNameRegExp: /\.scss$/,
+          cssProcessor: cssnano,
+          cssProcessorPluginOptions: {
+            preset: ['default', { discardComments: { removeAll: true } }]
+          },
+          canPrint: true,
+        }),
+        new PurifyCSSPlugin({
+          paths: glob.sync([
+            path.join(sourcesRoot, '*.html')
+          ]),
+          minimize: true,
+          styleExtensions: ['.scss'],
+          moduleExtensions: ['.html'],
+        }),
+        new HtmlMinifierPlugin({
+          html5: true,
+          caseSensitive: true,
+          removeComments: true,
+        }),
+      ],
     },
     plugins: [
       new NoEmitOnErrorsPlugin(),
@@ -306,6 +303,7 @@ module.exports = (env, argv) => {
         path: destination,
         prettyPrint: true,
         includeManifest: true,
+        filename: 'static/json/webpack-assets.json',
       }),
       new HashedModuleIdsPlugin({
         hashFunction: 'sha256',
@@ -313,19 +311,23 @@ module.exports = (env, argv) => {
         hashDigestLength: 20
       }),
       new ManifestPlugin({
-        fileName: 'asset-manifest.json',
+        fileName: 'static/json/asset-manifest.json',
       }),
       new SWPrecacheWebpackPlugin({
         dontCacheBustUrlsMatching: /\.\w{8}\./,
-        filename: 'service-worker.js',
+        filename: 'static/js/service-worker.js',
         minify: true,
         mergeStaticsConfig: true,
         navigateFallback: path.join(destination, 'index.html'),
         navigateFallbackWhitelist: [/^(?!\/__).*/],
         staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
       }),
+      new WorkboxPlugin.GenerateSW({
+        swDest: 'service-worker.js',
+        precacheManifestFilename: 'static/js/precache-manifest.[manifestHash].js',
+      }),
       new WebpackPwaManifest({
-        filename: 'manifest.json',
+        filename: 'static/json/manifest.json',
         name: packageJson.name,
         description: packageJson.description,
         inject: true,
@@ -335,7 +337,14 @@ module.exports = (env, argv) => {
         display: 'standalone',
         theme_color: '#000000',
         background_color: '#ffffff',
-        icons: isDevMode ? [] : icons,
+        icons: [
+          {
+            src: path.join(sourcesRoot, 'favicon.ico'),
+            sizes: [16, 24, 32, 64],
+            type: 'image/x-icon',
+            destination: path.join('static', 'icons'),
+          },
+        ],
       }),
       new ForkTsCheckerWebpackPlugin({
         async: false,

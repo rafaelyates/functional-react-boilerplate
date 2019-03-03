@@ -28,5 +28,10 @@ export default ReactDOM.render(
       <AppComponent />
     </ConnectedRouter>
   </Provider>,
-  document.getElementById('app')
+  document.getElementById('app'),
+  () => window.addEventListener('load', () =>
+    process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator
+      ? navigator.serviceWorker.register('./service-worker.js')
+      : undefined
+  )
 );
