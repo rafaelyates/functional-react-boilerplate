@@ -313,15 +313,6 @@ module.exports = (env, argv) => {
       new ManifestPlugin({
         fileName: 'static/json/asset-manifest.json',
       }),
-      new SWPrecacheWebpackPlugin({
-        dontCacheBustUrlsMatching: /\.\w{8}\./,
-        filename: 'static/js/service-worker.js',
-        minify: true,
-        mergeStaticsConfig: true,
-        navigateFallback: path.join(destination, 'index.html'),
-        navigateFallbackWhitelist: [/^(?!\/__).*/],
-        staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
-      }),
       new WorkboxPlugin.GenerateSW({
         swDest: 'service-worker.js',
         precacheManifestFilename: 'static/js/precache-manifest.[manifestHash].js',
