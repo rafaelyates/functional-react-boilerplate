@@ -20,17 +20,15 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HappyPack = require('happypack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
 const WorkboxPlugin = require('workbox-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
+const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-
-const SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
-const WebpackPwaManifest = require('webpack-pwa-manifest');
 
 const TerserPlugin = require('terser-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -303,6 +301,7 @@ module.exports = (env, argv) => {
         path: destination,
         prettyPrint: true,
         includeManifest: true,
+        keepInMemory: isDevMode,
         filename: 'static/json/webpack-assets.json',
       }),
       new HashedModuleIdsPlugin({

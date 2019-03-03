@@ -28,14 +28,10 @@ const mapDispatchToProps: (dispatch: Dispatch) => IDummyActions = (dispatch: Dis
  * The functional component.
  */
 const component: React.FunctionComponent<DummyProps> = React.memo((props: DummyProps) => (
-  <div className='row'>
-    <div className='col-md-auto'>
-
-      <h1 className={dummyStyle.nameTitle}>Hello {props.name}!!</h1>
-      <label htmlFor='name' className='form-check-label'>Type your name bellow:</label>
-      <input type='text' id='name' className='form-control' onChange={props.setupName} />
-
-    </div>
+  <div className='field'>
+    <h1 className={`title ${dummyStyle.nameTitle}`}>Hello {props.name}!!</h1>
+    <label htmlFor='name' className='label'>Type your name bellow:</label>
+    <input type='text' id='name' className='input' onChange={props.setupName} />
   </div>
 ));
 
