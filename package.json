@@ -16,11 +16,9 @@
     "test:coverage": "cross-env JEST_ENV=unit jest --coverage --colors"
   },
   "dependencies": {
-    "axios": "^0.18.0",
     "bulma": "^0.7.4",
     "connected-react-router": "^6.1.0",
     "core-js": "^2.5.7",
-    "immutable": "^4.0.0-rc.12",
     "intl": "^1.2.5",
     "lodash": "^4.17.11",
     "react": "^16.6.3",
@@ -32,6 +30,7 @@
     "redux": "^4.0.1",
     "redux-actions": "^2.6.4",
     "redux-form": "^8.1.0",
+    "redux-logger": "^3.0.6",
     "redux-promise": "^0.6.0",
     "redux-thunk": "^2.3.0",
     "reflect-metadata": "^0.1.13",
@@ -72,6 +71,7 @@
     "@types/react-router-dom": "^4.3.1",
     "@types/redux-actions": "^2.3.1",
     "@types/redux-form": "^7.5.2",
+    "@types/redux-logger": "^3.0.7",
     "@types/redux-promise": "^0.5.28",
     "@types/redux-test-utils": "^0.2.0",
     "@types/redux-thunk": "^2.1.0",

@@ -9,6 +9,7 @@ import thunk from 'redux-thunk';
 import { ConnectedRouter } from 'connected-react-router';
 
 import { AppComponent } from '@app/app.component';
+import { logger } from '@conf/logging.config';
 import { IAppState, reducers } from '@conf/reducers.config';
 import { browserHistory, history } from '@conf/routing.config';
 
@@ -20,7 +21,7 @@ const devTools: DeepPartial<IAppState> | undefined = (process.env.NODE_ENV === '
   ? window.__REDUX_DEVTOOLS_EXTENSION__()
   : undefined;
 
-const store: Store = applyMiddleware(thunk, promise, history)(createStore)(reducers, devTools);
+const store: Store = applyMiddleware(thunk, promise, history, logger)(createStore)(reducers, devTools);
 
 export default ReactDOM.render(
   <Provider store={store}>
