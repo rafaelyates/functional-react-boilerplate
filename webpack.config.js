@@ -9,7 +9,7 @@ const {
   NamedModulesPlugin,
   SourceMapDevToolPlugin,
   HashedModuleIdsPlugin,
-  HotModuleReplacementPlugin
+  HotModuleReplacementPlugin,
 } = require('webpack');
 
 const { GenerateSW } = require('workbox-webpack-plugin');
@@ -58,7 +58,7 @@ module.exports = (env, argv) => {
       loader: require.resolve('css-loader'),
       options: {
         modules: isModular,
-        minimize: true,
+        minimize: !isDevMode,
         sourceMap: true,
         localIdentName: isDevMode ? '[name]_[local]' : '[hash:base64]',
       },
@@ -79,7 +79,7 @@ module.exports = (env, argv) => {
 
   return ({
     bail: !isDevMode,
-    devtool: isDevMode ? 'inline-source-map' : 'source-map',
+    devtool: false,
     entry: {
       main: [path.join(sourcesRoot, 'main.tsx')],
       polyfills: [path.join(sourcesRoot, 'polyfills.ts')],
@@ -261,14 +261,18 @@ module.exports = (env, argv) => {
         log: false,
       }),
       new SourceMapDevToolPlugin({
-        filename: '[file].map[query]',
+        exclude: excludePath,
+        test: /\.(js|jsx|ts|tsx|css|scss)$/,
+        filename: isDevMode
+          ? undefined
+          : '[file].map[query]',
         moduleFilenameTemplate: '[resource-path]',
         fallbackModuleFilenameTemplate: '[resource-path]?[hash:8]',
         sourceRoot: 'webpack:///'
       }),
       new CircularDependencyPlugin({
         exclude: excludePath,
-        failOnError: false,
+        failOnError: !isDevMode,
         onDetected: false,
         cwd: projectRoot
       }),
