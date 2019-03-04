@@ -1,14 +1,18 @@
 import React from 'react';
-import { connect, ConnectedComponentClass } from 'react-redux';
+import { connect } from 'react-redux';
 
 import { bindActionCreators, Dispatch } from 'redux';
-import { ConfigProps, DecoratedComponentClass, Field, InjectedFormProps, reduxForm } from 'redux-form';
+import { Field, reduxForm } from 'redux-form';
 
 import dummyStyle from '@app/dummy/dummy.module.scss';
 
 import { dummyActions } from '@app/dummy/dummy.actions';
 import { IDummyActions, IDummyForm, IDummyState } from '@app/dummy/dummy.models';
+import { ConnectedComponent, ConnectedForm, InjectedProps } from '@app/shared/models/redux.models';
 import { IAppState } from '@conf/reducers.config';
+
+declare type DummyProps = IDummyState & IDummyActions;
+declare type DummyInjected = InjectedProps<DummyProps, IDummyForm>;
 
 /**
  * Maps the received state to the component properties.
@@ -23,15 +27,9 @@ const mapStateToProps: (state: IAppState) => IDummyState = (state: IAppState) =>
 const mapDispatchToProps: (dispatch: Dispatch) => IDummyActions = (dispatch: Dispatch) => bindActionCreators({ ...dummyActions }, dispatch);
 
 /**
- * Types used to build the form functional component.
- */
-declare type DummyProps = IDummyState & IDummyActions;
-declare type InjectedProps = InjectedFormProps<IDummyForm, DummyProps> & DummyProps;
-
-/**
  * The functional component.
  */
-const component: React.FunctionComponent<InjectedProps> = React.memo((props: InjectedProps) => (
+const component: React.FunctionComponent<DummyInjected> = React.memo((props: DummyInjected) => (
   <form className='form'>
     <div className='field'>
       <div className='control'>
@@ -46,24 +44,13 @@ const component: React.FunctionComponent<InjectedProps> = React.memo((props: Inj
 ));
 
 /**
- * Types used to connect the component with redux form.
- */
-declare type FormProps = IDummyState & IDummyActions & Partial<ConfigProps<IDummyForm, DummyProps>>;
-declare type DummyForm = DecoratedComponentClass<IDummyForm, FormProps, string>;
-
-/**
  * Connects the component inner elements to the redux form.
  */
-const formComponent: DummyForm = reduxForm<IDummyForm, DummyProps>({ form: 'dummyForm' })(component);
-
-/**
- * Type used to connect the component to the redux store.
- */
-declare type ConnectedDummyComponent = ConnectedComponentClass<DummyForm, Pick<DummyProps, never>>;
+const formComponent: ConnectedForm<DummyProps, IDummyForm> = reduxForm<IDummyForm, DummyProps>({ form: 'dummyForm' })(component);
 
 /**
  * Connects the form component with the redux general store.
  */
-const DummyComponent: ConnectedDummyComponent = connect(mapStateToProps, mapDispatchToProps)(formComponent);
+const DummyComponent: ConnectedComponent<DummyProps, IDummyForm> = connect(mapStateToProps, mapDispatchToProps)(formComponent);
 
 export { DummyComponent };
