@@ -12,6 +12,8 @@ const {
   HotModuleReplacementPlugin
 } = require('webpack');
 
+const { GenerateSW } = require('workbox-webpack-plugin');
+
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
 
@@ -20,7 +22,6 @@ const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HappyPack = require('happypack');
 
 const AssetsPlugin = require('assets-webpack-plugin');
-const WorkboxPlugin = require('workbox-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
 
@@ -29,6 +30,7 @@ const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 const TerserPlugin = require('terser-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -96,7 +98,9 @@ module.exports = (env, argv) => {
       inline: true,
       compress: true,
       historyApiFallback: true,
-      watchContentBase: true
+      watchContentBase: true,
+      quiet: true,
+      hot: true,
     },
     stats: {
       colors: true,
@@ -252,7 +256,10 @@ module.exports = (env, argv) => {
     },
     plugins: [
       new NoEmitOnErrorsPlugin(),
-      new HotModuleReplacementPlugin(),
+      new CaseSensitivePathsPlugin(),
+      new HotModuleReplacementPlugin({
+        log: false,
+      }),
       new SourceMapDevToolPlugin({
         filename: '[file].map[query]',
         moduleFilenameTemplate: '[resource-path]',
@@ -312,7 +319,7 @@ module.exports = (env, argv) => {
       new ManifestPlugin({
         fileName: 'static/json/asset-manifest.json',
       }),
-      new WorkboxPlugin.GenerateSW({
+      new GenerateSW({
         swDest: 'service-worker.js',
         precacheManifestFilename: 'static/js/precache-manifest.[manifestHash].js',
       }),
@@ -355,8 +362,8 @@ module.exports = (env, argv) => {
           },
         ]
       }),
-      new CaseSensitivePathsPlugin(),
       new NamedModulesPlugin(),
+      new FriendlyErrorsWebpackPlugin(),
     ],
     node: {
       __filename: true,
