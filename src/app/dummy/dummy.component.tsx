@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { connect } from 'react-redux';
 
 import { bindActionCreators, Dispatch } from 'redux';
@@ -29,7 +29,7 @@ const mapDispatchToProps: (dispatch: Dispatch) => IDummyActions = (dispatch: Dis
 /**
  * The functional component.
  */
-const component: React.FunctionComponent<DummyInjected> = React.memo((props: DummyInjected) => (
+const component: React.FunctionComponent<DummyInjected> = memo((props: DummyInjected) => (
   <form className='form'>
     <div className='field'>
       <div className='control'>

@@ -380,6 +380,7 @@ module.exports = (env, argv) => {
       console: true,
       dgram: 'empty',
       fs: 'empty',
+      module: 'empty',
       crypto: 'empty',
       tls: 'empty',
       net: 'empty',
