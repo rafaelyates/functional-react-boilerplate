@@ -16,7 +16,7 @@ export interface IAppState {
 const reducers: Reducer<IAppState> = combineReducers({
   dummy: dummyReducer,
   router: routerReducer,
-  form: formReducer
+  form: formReducer,
 });
 
 export { reducers };

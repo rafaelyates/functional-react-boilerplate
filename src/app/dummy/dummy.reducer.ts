@@ -9,7 +9,7 @@ import { ReducerFunction } from '@app/shared/models/function.models';
  * The fallback state.
  */
 const initialState: IDummyState = {
-  name: ''
+  name: '',
 };
 
 /**
@@ -30,7 +30,7 @@ const handleNameSetup: ReducerFunction<IDummyState> = (state: IDummyState, actio
  * Maps all the actions to it's corresponding reducer functions, always delivering a state.
  */
 const actionsRecord: Record<DummyActionTypes, ReducerFunction<IDummyState>> = {
-  [DummyActionTypes.NAME_SETUP]: handleNameSetup
+  [DummyActionTypes.NAME_SETUP]: handleNameSetup,
 };
 
 const dummyReducer: Reducer = handleActions(actionsRecord, initialState);

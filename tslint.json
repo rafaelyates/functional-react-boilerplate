@@ -209,6 +209,13 @@
     ],
     "prefer-for-of": true,
     "prefer-type-cast": false,
+    "trailing-comma": [
+      true,
+      {
+        "multiline": "always",
+        "singleline": "never"
+      }
+    ],
     "typedef": [
       true,
       "call-signature",

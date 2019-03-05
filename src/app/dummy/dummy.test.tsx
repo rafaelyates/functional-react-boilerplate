@@ -1,5 +1,3 @@
-import { Component, Dispatch } from 'react';
-
 import { createMockStore } from 'redux-test-utils';
 
 import { ShallowWrapper } from 'enzyme';
@@ -12,11 +10,14 @@ import { IAppState } from '@conf/reducers.config';
 describe('Component: Dummy', () => {
 
   const initialState: Partial<IAppState> = {
-    dummy: { name: 'kek' }
+    dummy: { name: 'kek' },
   };
 
   it('should render without crashing', () => {
-    const wrapper: ShallowWrapper<IDummyState> = shallowWithStore(<DummyComponent />, createMockStore(initialState));
+    const wrapper: ShallowWrapper<IDummyState> = shallowWithStore(
+      <DummyComponent />,
+      createMockStore(initialState),
+    );
 
     expect(wrapper).toBeDefined();
     expect(wrapper.props().name).toBe('kek');

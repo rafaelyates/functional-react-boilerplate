@@ -17,9 +17,9 @@ declare const window: Window & {
   readonly __REDUX_DEVTOOLS_EXTENSION__?: () => DeepPartial<IAppState>;
 };
 
-const devTools: DeepPartial<IAppState> | undefined = (process.env.NODE_ENV === 'development' && window.__REDUX_DEVTOOLS_EXTENSION__ !== undefined)
+const devTools: DeepPartial<IAppState> = process.env.NODE_ENV === 'development' && !!window.__REDUX_DEVTOOLS_EXTENSION__
   ? window.__REDUX_DEVTOOLS_EXTENSION__()
-  : undefined;
+  : {};
 
 const store: Store = applyMiddleware(thunk, promise, history, logger)(createStore)(reducers, devTools);
 
@@ -30,9 +30,7 @@ export default ReactDOM.render(
     </ConnectedRouter>
   </Provider>,
   document.getElementById('app'),
-  () => window.addEventListener('load', () =>
-    process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator
-      ? navigator.serviceWorker.register('./service-worker.js')
-      : undefined
-  )
+  () => process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator
+    ? window.addEventListener('load', async () => navigator.serviceWorker.register('./service-worker.js'))
+    : undefined,
 );
