@@ -8,8 +8,5 @@ Boilerplate for React JS project with the following features:
 4. SCSS styles
 5. CSS modules
 6. Unit tests
-7. PWA ready (workbox)
-
-What is not done yet?
-
-1. Integration tests
+7. Integration tests
+8. PWA ready (workbox)

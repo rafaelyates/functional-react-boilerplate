@@ -4,7 +4,6 @@
     /* Module Resolution Options */
     "moduleResolution": "node",
     "baseUrl": "./",
-    "rootDir": "./src",
     "outDir": "./dist",
     /* Basic Options */
     "module": "esnext",
@@ -48,7 +47,8 @@
     ],
     "paths": {
       "@app/*": ["src/app/*"],
-      "@conf/*": ["src/config/*"]
+      "@conf/*": ["src/config/*"],
+      "@e2e/*": ["e2e/*"]
     }
   }
 }

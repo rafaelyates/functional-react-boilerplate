@@ -13,7 +13,9 @@
     "build": "cross-env NODE_ENV=production webpack --progress --colors --inline --mode production",
     "serve:dist": "http-server ./dist -p 8080 --cors",
     "test": "cross-env JEST_ENV=unit jest --colors",
-    "test:coverage": "cross-env JEST_ENV=unit jest --coverage --colors"
+    "test:coverage": "cross-env JEST_ENV=unit jest --coverage --colors",
+    "e2e": "cross-env JEST_ENV=e2e jest --colors",
+    "e2e:headless": "cross-env JEST_ENV=e2e HEADLESS=true jest --colors"
   },
   "dependencies": {
     "bulma": "^0.7.4",
