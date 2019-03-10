@@ -1,6 +1,8 @@
 import { Reducer } from 'redux';
 import { Action, handleActions } from 'redux-actions';
 
+import { get } from 'lodash/fp';
+
 import { DummyActionTypes } from '@app/dummy/dummy.actions';
 import { DummyPayload, IDummyState } from '@app/dummy/dummy.models';
 import { ReducerFunction } from '@app/shared/models/function.models';
@@ -17,11 +19,9 @@ const initialState: IDummyState = {
  * @param state The current state.
  * @param action The action with the modification payload.
  */
-const handleNameSetup: ReducerFunction<IDummyState> = (state: IDummyState, action: Action<DummyPayload>) => {
+const handleNameSetup: ReducerFunction<IDummyState> = (state: IDummyState = initialState, action: Action<DummyPayload>) => {
 
-  const name: string | undefined = action.payload && action.payload.data
-    ? action.payload.data.items[0].name
-    : undefined;
+  const name: string | undefined = get('payload.data.items[0].name', action);
 
   return { ...state, name };
 };

@@ -2,6 +2,8 @@ import { ChangeEvent, Dispatch } from 'react';
 
 import { Action, createAction } from 'redux-actions';
 
+import { set } from 'lodash/fp';
+
 import { DummyPayload, IDummyActions } from '@app/dummy/dummy.models';
 import { ActionFunction } from '@app/shared/models/function.models';
 
@@ -18,17 +20,10 @@ enum DummyActionTypes {
  */
 const setupName: ActionFunction<ChangeEvent<HTMLInputElement>> = (event: ChangeEvent<HTMLInputElement>) => {
 
-  const receivedName: string = event.target.value;
-
-  const payloadBuilder: (name: string) => DummyPayload = (name: string) => ({
-    id: 'MOCKED_DATA',
-    data: { items: [{ name }] },
-  });
-
   const nameAction: Action<DummyPayload> = createAction(
     DummyActionTypes.NAME_SETUP,
-    payloadBuilder,
-  )(receivedName);
+    (name: string) => set('data.items[0].name', name, { id: 'MOCKED_DATA' }),
+  )(event.target.value);
 
   return (dispatch: Dispatch<Action<DummyPayload>>) => dispatch(nameAction);
 };

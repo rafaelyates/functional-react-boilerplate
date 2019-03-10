@@ -18,6 +18,7 @@ module.exports = (api) => {
       '@babel/plugin-syntax-object-rest-spread',
       '@babel/plugin-syntax-json-strings',
       'dynamic-import-node',
+      'react-require',
       'lodash'
     ],
     sourceMaps: true,
