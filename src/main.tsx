@@ -1,5 +1,4 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
 import { applyMiddleware, createStore, DeepPartial, Store } from 'redux';
@@ -23,7 +22,7 @@ const devTools: DeepPartial<IAppState> = process.env.NODE_ENV === 'development' 
 
 const store: Store = applyMiddleware(thunk, promise, history, logger)(createStore)(reducers, devTools);
 
-export default ReactDOM.render(
+export default render(
   <Provider store={store}>
     <ConnectedRouter history={browserHistory}>
       <AppComponent />
