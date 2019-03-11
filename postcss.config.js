@@ -23,6 +23,7 @@ const postcssCustomSelectors = require('postcss-custom-selectors');
 const postcssSelectorNot = require('postcss-selector-not');
 const postcssSelectorMatches = require('postcss-selector-matches');
 const postcssCalc = require('postcss-calc');
+const postcssFontVariant = require('postcss-font-variant');
 const postcssNesting = require('postcss-nesting');
 const postcssNested = require('postcss-nested');
 const postcssColorFunction = require('postcss-color-function');
@@ -46,6 +47,7 @@ module.exports = {
     postcssSelectorNot(),
     postcssSelectorMatches(),
     postcssCalc(),
+    postcssFontVariant(),
     postcssNesting(),
     postcssNested(),
     postcssColorFunction(),

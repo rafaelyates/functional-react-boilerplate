@@ -1,12 +1,13 @@
 {
   "extends": [
-    "stylelint-config-standard",
     "stylelint-config-css-modules",
-    "stylelint-config-recommended",
-    "stylelint-config-recommended-scss"
+    "stylelint-config-standard-scss",
+    "stylelint-config-sass-guidelines",
+    "stylelint-a11y"
   ],
   "plugins": [
-    "stylelint-scss"
+    "stylelint-scss",
+    "stylelint-a11y"
   ],
   "syntax": "scss",
   "ignoreFiles": "./dist/**",
