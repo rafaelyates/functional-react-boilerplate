@@ -174,10 +174,7 @@ module.exports = (env, argv) => {
         {
           test: /\.(ani|cur|eot|otf|ttf|woff|woff2)$/,
           use: [
-            {
-              loader: require.resolve('ttf-loader'),
-              options: { name: 'static/media/[name].[hash:8].[ext]' },
-            },
+            { loader: require.resolve('url-loader') },
           ]
         },
         {
