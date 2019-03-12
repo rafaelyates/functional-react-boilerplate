@@ -4,20 +4,8 @@
 
 const isUnitEnvironment = process.env.JEST_ENV === 'unit';
 
-const preset = isUnitEnvironment
-  ? 'ts-jest'
-  : 'jest-puppeteer';
-
-const setupFiles = isUnitEnvironment
-  ? ['<rootDir>/src/polyfills.ts']
-  : [];
-
-const testEnvironment = isUnitEnvironment
-    ? 'enzyme'
-    : 'jest-environment-puppeteer';
-
 const testMatch = isUnitEnvironment
-  ? ['**/src/**/?(*.)+(spec|test).ts?(x)']
+  ? ['**/src/**/?(*.)+(*.)(spec|test).ts?(x)']
   : ['**/e2e/**/?(*.)+(e2e).(spec|test).ts?(x)'];
 
 module.exports = {
@@ -113,7 +101,7 @@ module.exports = {
   // notifyMode: 'failure-change',
 
   // A preset that is used as a base for Jest's configuration
-  preset,
+  preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: null,
@@ -147,7 +135,10 @@ module.exports = {
   // runner: 'jest-runner',
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  setupFiles,
+  setupFiles: [
+    'raf/polyfill',
+    '<rootDir>/src/test.ts',
+  ],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
   setupFilesAfterEnv: [
@@ -161,7 +152,7 @@ module.exports = {
   ],
 
   // The test environment that will be used for testing
-  testEnvironment,
+  testEnvironment: 'jest-environment-puppeteer',
 
   // Options that will be passed to the testEnvironment
   testEnvironmentOptions: {
@@ -196,7 +187,7 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.tsx?$': '<rootDir>/jest-ts-babel.transform.js'
+    '^.+\\.tsx?$': '<rootDir>/jest-ts-babel.transform.js',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation

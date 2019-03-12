@@ -21,7 +21,7 @@ const initialState: IDummyState = {
  */
 const handleNameSetup: ReducerFunction<IDummyState> = (state: IDummyState = initialState, action: Action<DummyPayload>) => {
 
-  const name: string | undefined = get('payload.data.items[0].name', action);
+  const name: string | undefined = get('payload.data.items[0].name', action) as string;
 
   return { ...state, name };
 };

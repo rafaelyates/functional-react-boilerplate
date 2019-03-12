@@ -159,6 +159,7 @@
     "prefer-const": true,
     "prefer-method-signature": false,
     "prefer-readonly": true,
+    "promise-function-async": true,
     "quotemark": [
       true,
       "single"
