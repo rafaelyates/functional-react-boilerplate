@@ -110,8 +110,12 @@
           "beforeAll",
           "beforeEach",
           "describe",
+          "xdescribe",
+          "fdescribe",
           "expect",
           "it",
+          "xit",
+          "fit",
           "test"
         ]
       }
