@@ -1,10 +1,9 @@
 import { FunctionComponent, memo } from 'react';
 
+import { AppComponentProps } from '@app/app.models';
 import { AppRouting } from '@app/app.routing';
 
-interface IAppComponentProperties { }
-
-const AppComponent: FunctionComponent<IAppComponentProperties> = memo((props: IAppComponentProperties) => (
+const AppComponent: FunctionComponent<AppComponentProps> = memo((props: AppComponentProps) => (
   <div className='container'>
     <AppRouting />
   </div>

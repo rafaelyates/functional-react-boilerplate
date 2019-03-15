@@ -2,30 +2,30 @@ import { ChangeEvent } from 'react';
 
 import { ActionCreator } from 'redux';
 
-import { IPayload } from '@app/shared/models/payload.models';
+import { Payload } from '@app/shared/models/payload.models';
 
 /**
  * The dummy payload.
  */
-export declare type DummyPayload = IPayload<IDummyState>;
+export declare type DummyPayload = Payload<DummyState>;
 
 /**
  * Maps the component properties.
  */
-export interface IDummyState {
+export interface DummyState {
   readonly name?: string;
 }
 
 /**
  * Maps all the possible actions dispatched by the component.
  */
-export interface IDummyActions {
+export interface DummyActions {
   readonly setupName: (event: ChangeEvent<HTMLInputElement>) => ActionCreator<void>;
 }
 
 /**
  * Maps all the form component names constraint.
  */
-export interface IDummyForm {
+export interface DummyForm {
   readonly userName: string;
 }

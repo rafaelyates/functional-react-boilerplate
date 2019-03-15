@@ -48,9 +48,13 @@ const nodeModules = path.join(projectRoot, 'node_modules');
 const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'scripts', 'vendor', 'main'];
 const extSuffixes = ['.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.scss', '.json'];
 
-const nodeModulesRegexp = /node_modules/;
-const testFilesRegexp = /\.(spec|test).(j|t)sx?$/;
-const excludePath = new RegExp(`${nodeModulesRegexp.source}|${testFilesRegexp.source}`);
+const excludePath = new RegExp([
+    /node_modules/,
+    /\.(spec|test).(j|t)sx?$/,
+  ]
+  .map((regExp) => regExp.source)
+  .join('|')
+);
 
 module.exports = (env, argv) => {
   const isDevMode = (argv.mode === 'development');

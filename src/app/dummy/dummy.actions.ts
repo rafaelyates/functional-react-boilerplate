@@ -4,7 +4,7 @@ import { Action, createAction } from 'redux-actions';
 
 import { set } from 'lodash/fp';
 
-import { DummyPayload, IDummyActions } from '@app/dummy/dummy.models';
+import { DummyActions, DummyPayload } from '@app/dummy/dummy.models';
 import { ActionFunction } from '@app/shared/models/function.models';
 
 /**
@@ -31,6 +31,6 @@ const setupName: ActionFunction<ChangeEvent<HTMLInputElement>> = (event: ChangeE
 /**
  * Object used to store all the dispatch actions.
  */
-const dummyActions: IDummyActions = { setupName };
+const dummyActions: DummyActions = { setupName };
 
 export { DummyActionTypes, dummyActions };

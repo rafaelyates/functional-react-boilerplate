@@ -4,13 +4,13 @@ import { Action, handleActions } from 'redux-actions';
 import { get } from 'lodash/fp';
 
 import { DummyActionTypes } from '@app/dummy/dummy.actions';
-import { DummyPayload, IDummyState } from '@app/dummy/dummy.models';
+import { DummyPayload, DummyState } from '@app/dummy/dummy.models';
 import { ReducerFunction } from '@app/shared/models/function.models';
 
 /**
  * The fallback state.
  */
-const initialState: IDummyState = {
+const initialState: DummyState = {
   name: '',
 };
 
@@ -19,7 +19,7 @@ const initialState: IDummyState = {
  * @param state The current state.
  * @param action The action with the modification payload.
  */
-const handleNameSetup: ReducerFunction<IDummyState> = (state: IDummyState = initialState, action: Action<DummyPayload>) => {
+const handleNameSetup: ReducerFunction<DummyState> = (state: DummyState = initialState, action: Action<DummyPayload>) => {
 
   const name: string | undefined = get('payload.data.items[0].name', action) as string;
 
@@ -29,7 +29,7 @@ const handleNameSetup: ReducerFunction<IDummyState> = (state: IDummyState = init
 /**
  * Maps all the actions to it's corresponding reducer functions, always delivering a state.
  */
-const actionsRecord: Record<DummyActionTypes, ReducerFunction<IDummyState>> = {
+const actionsRecord: Record<DummyActionTypes, ReducerFunction<DummyState>> = {
   [DummyActionTypes.NAME_SETUP]: handleNameSetup,
 };
 

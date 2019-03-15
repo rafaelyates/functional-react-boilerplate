@@ -46,7 +46,10 @@
       "spaces",
       2
     ],
-    "interface-name": true,
+    "interface-name": [
+      true,
+      "never-prefix"
+    ],
     "interface-over-type-literal": true,
     "label-position": true,
     "match-default-export-name": false,

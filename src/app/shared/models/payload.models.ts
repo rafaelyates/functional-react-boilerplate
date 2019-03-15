@@ -6,16 +6,16 @@
 /**
  * Represents the root received payload.
  */
-export interface IPayload<T> {
+export interface Payload<T> {
   readonly id: string;
-  readonly data?: IData<T>;
-  readonly error?: IError;
+  readonly data?: Data<T>;
+  readonly error?: Error;
 }
 
 /**
  * In case of success, the requested data.
  */
-export interface IData<T> {
+export interface Data<T> {
   readonly id?: string;
   readonly items: ReadonlyArray<T>;
 }
@@ -23,16 +23,16 @@ export interface IData<T> {
 /**
  * In case of errors, the fail details.
  */
-export interface IError {
+export interface Error {
   readonly code: number;
   readonly message: string;
-  readonly errors?: ReadonlyArray<IStackTrace>;
+  readonly errors?: ReadonlyArray<StackTrace>;
 }
 
 /**
  * The detailed error reason.
  */
-export interface IStackTrace {
+export interface StackTrace {
   readonly reason: string;
   readonly message: string;
 }

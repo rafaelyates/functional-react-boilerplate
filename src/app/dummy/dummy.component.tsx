@@ -6,25 +6,25 @@ import { Field, reduxForm } from 'redux-form';
 
 import dummyStyle from '@app/dummy/dummy.module.scss';
 
+import { AppState } from '@app/app.models';
 import { dummyActions } from '@app/dummy/dummy.actions';
-import { IDummyActions, IDummyForm, IDummyState } from '@app/dummy/dummy.models';
+import { DummyActions, DummyForm, DummyState } from '@app/dummy/dummy.models';
 import { ConnectedComponent, ConnectedForm, InjectedProps } from '@app/shared/models/redux.models';
-import { IAppState } from '@conf/reducers.config';
 
-declare type DummyProps = IDummyState & IDummyActions;
-declare type DummyInjected = InjectedProps<DummyProps, IDummyForm>;
+declare type DummyProps = DummyState & DummyActions;
+declare type DummyInjected = InjectedProps<DummyProps, DummyForm>;
 
 /**
  * Maps the received state to the component properties.
  * @param state The new state.
  */
-const mapStateToProps: (state: IAppState) => IDummyState = (state: IAppState) => ({ ...state.dummy });
+const mapStateToProps: (state: AppState) => DummyState = (state: AppState) => ({ ...state.dummy });
 
 /**
  * Maps the received actions to the component properties.
  * @param dispatch The actions.
  */
-const mapDispatchToProps: (dispatch: Dispatch) => IDummyActions = (dispatch: Dispatch) => bindActionCreators({ ...dummyActions }, dispatch);
+const mapDispatchToProps: (dispatch: Dispatch) => DummyActions = (dispatch: Dispatch) => bindActionCreators({ ...dummyActions }, dispatch);
 
 /**
  * The functional component.
@@ -46,11 +46,11 @@ const component: FunctionComponent<DummyInjected> = memo((props: DummyInjected) 
 /**
  * Connects the component inner elements to the redux form.
  */
-const formComponent: ConnectedForm<DummyProps, IDummyForm> = reduxForm<IDummyForm, DummyProps>({ form: 'dummyForm' })(component);
+const formComponent: ConnectedForm<DummyProps, DummyForm> = reduxForm<DummyForm, DummyProps>({ form: 'dummyForm' })(component);
 
 /**
  * Connects the form component with the redux general store.
  */
-const DummyComponent: ConnectedComponent<DummyProps, IDummyForm> = connect(mapStateToProps, mapDispatchToProps)(formComponent);
+const DummyComponent: ConnectedComponent<DummyProps, DummyForm> = connect(mapStateToProps, mapDispatchToProps)(formComponent);
 
 export { DummyComponent };
