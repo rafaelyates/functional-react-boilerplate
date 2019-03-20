@@ -1,13 +1,15 @@
-import { FunctionComponent, memo } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { FunctionComponent, lazy } from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
 
-import { AppRoutingProps } from '@app/app.models';
-import { DummyComponent } from '@app/dummy/dummy.component';
+import { LazyLoadedComponent } from '@app/app.models';
 
-const AppRouting: FunctionComponent<AppRoutingProps> = memo((props: AppRoutingProps) => (
+const lazyDummy: LazyLoadedComponent = lazy(async () => import('@app/dummy'));
+
+const AppRouting: FunctionComponent<unknown> = () => (
   <Switch>
-    <Route path='/' component={DummyComponent} />
+    <Redirect exact={true} from='/' to='/dummy' />
+    <Route path='/dummy' component={lazyDummy} />
   </Switch>
-));
+);
 
 export { AppRouting };

@@ -1,12 +1,13 @@
-import { FunctionComponent, memo } from 'react';
+import { FunctionComponent, memo, Suspense } from 'react';
 
-import { AppComponentProps } from '@app/app.models';
 import { AppRouting } from '@app/app.routing';
 
-const AppComponent: FunctionComponent<AppComponentProps> = memo((props: AppComponentProps) => (
-  <div className='container'>
-    <AppRouting />
+const AppComponent: FunctionComponent<unknown> = () => (
+  <div className='container is-fluid'>
+    <Suspense fallback={<progress className='progress is-small is-primary' max='100' />}>
+      <AppRouting />
+    </Suspense>
   </div>
-));
+);
 
 export { AppComponent };
