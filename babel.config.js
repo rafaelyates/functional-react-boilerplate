@@ -3,6 +3,11 @@
 module.exports = (api) => {
   api.cache(true);
 
+  const transformModules = [
+    'lodash',
+    'recompose',
+  ];
+
   return ({
     presets: [
       '@babel/preset-env',
@@ -19,7 +24,7 @@ module.exports = (api) => {
       '@babel/plugin-syntax-json-strings',
       'dynamic-import-node',
       'react-require',
-      'lodash'
+      ['lodash', { id: transformModules }]
     ],
     sourceMaps: true,
     env: {
