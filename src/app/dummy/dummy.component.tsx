@@ -4,32 +4,21 @@ import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
 import { Field, reduxForm } from 'redux-form';
 
+import { compose } from 'recompose';
+
 import dummyStyle from '@app/dummy/dummy.module.scss';
 
 import { AppState } from '@app/app.models';
 import { dummyActions } from '@app/dummy/dummy.actions';
-import { DummyActions, DummyForm, DummyState } from '@app/dummy/dummy.models';
-import { ConnectedComponent, ConnectedForm, InjectedProps } from '@app/shared/models/redux.models';
+import { DummyForm, DummyProps } from '@app/dummy/dummy.models';
+import { InjectedProps } from '@app/shared/models/redux.models';
 
-declare type DummyProps = DummyState & DummyActions;
 declare type DummyInjected = InjectedProps<DummyProps, DummyForm>;
-
-/**
- * Maps the received state to the component properties.
- * @param state The new state.
- */
-const mapStateToProps: (state: AppState) => DummyState = (state: AppState) => ({ ...state.dummy });
-
-/**
- * Maps the received actions to the component properties.
- * @param dispatch The actions.
- */
-const mapDispatchToProps: (dispatch: Dispatch) => DummyActions = (dispatch: Dispatch) => bindActionCreators({ ...dummyActions }, dispatch);
 
 /**
  * The functional component.
  */
-const component: FunctionComponent<DummyInjected> = memo((props: DummyInjected) => (
+const DummyComponent: FunctionComponent<DummyInjected> = memo((props: DummyInjected) => (
   <form className='form'>
     <div className='field'>
       <div className='control'>
@@ -44,13 +33,14 @@ const component: FunctionComponent<DummyInjected> = memo((props: DummyInjected) 
 ));
 
 /**
- * Connects the component inner elements to the redux form.
+ * Composes the component as the following:
+ * - Connects the component inner elements to the redux form.
+ * - Connects the form component with the redux general store.
  */
-const formComponent: ConnectedForm<DummyProps, DummyForm> = reduxForm<DummyForm, DummyProps>({ form: 'dummyForm' })(component);
-
-/**
- * Connects the form component with the redux general store.
- */
-const DummyComponent: ConnectedComponent<DummyProps, DummyForm> = connect(mapStateToProps, mapDispatchToProps)(formComponent);
-
-export { DummyComponent };
+export default compose<DummyInjected, DummyProps>(
+  reduxForm({ form: 'dummyForm' }),
+  connect(
+    (state: AppState) => ({ ...state.dummy }),
+    (dispatch: Dispatch) => bindActionCreators({ ...dummyActions }, dispatch),
+  ),
+)(DummyComponent);

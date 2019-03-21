@@ -10,6 +10,11 @@ import { Payload } from '@app/shared/models/payload.models';
 export declare type DummyPayload = Payload<DummyState>;
 
 /**
+ * The overall dummy form properties.
+ */
+export declare type DummyProps = DummyState & DummyActions;
+
+/**
  * Maps the component properties.
  */
 export interface DummyState {
