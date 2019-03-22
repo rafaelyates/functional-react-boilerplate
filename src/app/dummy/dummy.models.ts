@@ -25,7 +25,7 @@ export interface DummyState {
  * Maps all the possible actions dispatched by the component.
  */
 export interface DummyActions {
-  readonly setupName: (event: ChangeEvent<HTMLInputElement>) => ActionCreator<void>;
+  readonly setupName?: (event: ChangeEvent<HTMLInputElement>) => ActionCreator<void>;
 }
 
 /**

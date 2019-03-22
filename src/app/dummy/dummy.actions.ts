@@ -30,6 +30,6 @@ const setupName: ActionFunction<ChangeEvent<HTMLInputElement>> = (event: ChangeE
 /**
  * Object used to store all the dispatch actions.
  */
-const dummyActions: DummyActions = { setupName };
+const dummyActions: Required<DummyActions> = { setupName };
 
 export { DummyActionTypes, dummyActions };
