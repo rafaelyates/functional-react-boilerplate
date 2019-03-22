@@ -1,5 +1,6 @@
 'use strict';
 
+const path = require('path');
 const precss = require('precss');
 const cssnano = require('cssnano');
 const autoprefixer = require('autoprefixer');
@@ -31,7 +32,8 @@ const postcssOpacity = require('postcss-opacity');
 const postcssPseudoElements = require('postcss-pseudoelements');
 const postcssVmin = require('postcss-vmin');
 
-const projectRoot = __dirname || process.cwd();
+const configsRoot = __dirname || process.cwd();
+const projectRoot = path.resolve(configsRoot, '..');
 
 module.exports = {
   ident: 'postcss',

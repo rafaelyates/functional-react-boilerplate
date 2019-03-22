@@ -1,12 +1,13 @@
 {
   "editor.renderWhitespace": "all",
   "editor.rulers": [
-    160
+    120
   ],
   "editor.tabSize": 2,
   "editor.insertSpaces": true,
   "files.associations": {
-    "*.stylelintrc": "json"
+    "*.stylelintrc": "json",
+    "*.prettierrc": "json"
   },
   "files.trimTrailingWhitespace": true,
   "files.trimFinalNewlines": true,

@@ -8,8 +8,8 @@ const lazyDummy: LazyLoadedComponent<DummyProps> = lazy(async () => import('@app
 
 const AppRouting: FunctionComponent<unknown> = () => (
   <Switch>
-    <Redirect exact={true} from='/' to='/dummy' />
-    <Route path='/dummy' component={lazyDummy} />
+    <Redirect exact={true} from="/" to="/dummy" />
+    <Route path="/dummy" component={lazyDummy} />
   </Switch>
 );
 

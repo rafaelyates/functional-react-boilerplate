@@ -16,7 +16,11 @@ export declare type FormProps<Properties, Form> = Partial<ConfigProps<Form, Prop
 /**
  * The type by a built redux form component.
  */
-export declare type ConnectedForm<Properties, Form> = DecoratedComponentClass<Form, FormProps<Properties, Form>, string>;
+export declare type ConnectedForm<Properties, Form> = DecoratedComponentClass<
+  Form,
+  FormProps<Properties, Form>,
+  string
+>;
 
 /**
  * The type used as props inside a newly connected redux component.
@@ -26,4 +30,7 @@ export declare type ConnectedProps<Properties, Form> = ConnectedForm<Properties,
 /**
  * The type used by a connected redux component.
  */
-export declare type ConnectedComponent<Properties, Form = never> = ConnectedComponentClass<ConnectedProps<Properties, Form>, Pick<Properties, never>>;
+export declare type ConnectedComponent<Properties, Form = never> = ConnectedComponentClass<
+  ConnectedProps<Properties, Form>,
+  Pick<Properties, never>
+>;

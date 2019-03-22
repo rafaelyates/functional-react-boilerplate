@@ -1,7 +1,12 @@
 'use strict';
 // For a detailed explanation regarding each configuration property, visit:
 // https://jestjs.io/docs/en/configuration.html
+const path = require('path');
 
+const configsRoot = __dirname || process.cwd();
+const projectRoot = path.resolve(configsRoot, '..');
+
+process.env.JEST_PUPPETEER_CONFIG = path.join(configsRoot, 'jest-puppeteer.config.js');
 const isUnitEnvironment = process.env.JEST_ENV === 'unit';
 
 const testMatch = isUnitEnvironment
@@ -28,24 +33,16 @@ module.exports = {
   // collectCoverage: false,
 
   // An array of glob patterns indicating a set of files for which coverage information should be collected
-  collectCoverageFrom: [
-    'src/**/*.{js,jsx,ts,tsx}'
-  ],
+  collectCoverageFrom: ['src/**/*.{js,jsx,ts,tsx}'],
 
   // The directory where Jest should output its coverage files
   coverageDirectory: 'coverage',
 
   // An array of regexp pattern strings used to skip coverage collection
-  coveragePathIgnorePatterns: [
-    '/node_modules/',
-    '/dist/'
-  ],
+  coveragePathIgnorePatterns: ['/node_modules/', '/dist/'],
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: [
-    'json',
-    'lcov',
-  ],
+  coverageReporters: ['json', 'lcov'],
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: null,
@@ -74,14 +71,7 @@ module.exports = {
   // ],
 
   // An array of file extensions your modules use
-  moduleFileExtensions: [
-    'json',
-    'js',
-    'jsx',
-    'ts',
-    'tsx',
-    'node'
-  ],
+  moduleFileExtensions: ['json', 'js', 'jsx', 'ts', 'tsx', 'node'],
 
   // A map from regular expressions to module names that allow to stub out resources with a single module
   moduleNameMapper: {
@@ -107,9 +97,7 @@ module.exports = {
   // projects: null,
 
   // Use this configuration option to add custom reporters to Jest
-  reporters: [
-    'jest-spec-reporter'
-  ],
+  reporters: ['jest-spec-reporter'],
 
   // Automatically reset mock state between every test
   // resetMocks: false,
@@ -124,7 +112,7 @@ module.exports = {
   // restoreMocks: false,
 
   // The root directory that Jest should scan for tests and modules within
-  // rootDir: null,
+  rootDir: projectRoot,
 
   // A list of paths to directories that Jest should use to search for files in
   // roots: [
@@ -135,28 +123,20 @@ module.exports = {
   // runner: 'jest-runner',
 
   // The paths to modules that run some code to configure or set up the testing environment before each test
-  setupFiles: [
-    'raf/polyfill',
-    '<rootDir>/src/test.ts',
-  ],
+  setupFiles: ['raf/polyfill', '<rootDir>/src/test.ts'],
 
   // A list of paths to modules that run some code to configure or set up the testing framework before each test
-  setupFilesAfterEnv: [
-    'jest-enzyme',
-    'expect-puppeteer'
-  ],
+  setupFilesAfterEnv: ['jest-enzyme', 'expect-puppeteer'],
 
   // A list of paths to snapshot serializer modules Jest should use for snapshot testing
-  snapshotSerializers: [
-    'enzyme-to-json/serializer'
-  ],
+  snapshotSerializers: ['enzyme-to-json/serializer'],
 
   // The test environment that will be used for testing
   testEnvironment: 'jest-environment-puppeteer',
 
   // Options that will be passed to the testEnvironment
   testEnvironmentOptions: {
-    enzymeAdapter: 'react16'
+    enzymeAdapter: 'react16',
   },
 
   // Adds a location field to test results
@@ -187,7 +167,7 @@ module.exports = {
 
   // A map from regular expressions to paths to transformers
   transform: {
-    '^.+\\.tsx?$': '<rootDir>/jest-ts-babel.transform.js',
+    '^.+\\.tsx?$': '<rootDir>/config/jest-transform.config.js',
   },
 
   // An array of regexp pattern strings that are matched against all source file paths, matched files will skip transformation

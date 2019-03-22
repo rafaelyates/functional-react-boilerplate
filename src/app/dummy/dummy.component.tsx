@@ -19,14 +19,14 @@ declare type DummyInjected = InjectedProps<DummyProps, DummyForm>;
  * The functional component.
  */
 const DummyComponent: FunctionComponent<DummyInjected> = memo((props: DummyInjected) => (
-  <form className='form'>
-    <div className='field'>
-      <div className='control'>
-
+  <form className="form">
+    <div className="field">
+      <div className="control">
         <h1 className={`title ${dummyStyle.nameTitle}`}>Hello {props.name}!!</h1>
-        <label htmlFor='name' className='label'>Type your name bellow:</label>
-        <Field name='userName' component='input' type='text' className='input' onChange={props.setupName} />
-
+        <label htmlFor="name" className="label">
+          Type your name bellow:
+        </label>
+        <Field name="userName" component="input" type="text" className="input" onChange={props.setupName} />
       </div>
     </div>
   </form>

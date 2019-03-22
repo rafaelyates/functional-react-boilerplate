@@ -11,7 +11,7 @@ import { ActionFunction } from '@app/shared/models/function.models';
  * Enumerates the possible dispatch actions.
  */
 enum DummyActionTypes {
-  NAME_SETUP = 'NAME_SETUP',
+  DUMMY_NAME_SETUP_ACTION = 'DUMMY_NAME_SETUP',
 }
 
 /**
@@ -19,13 +19,12 @@ enum DummyActionTypes {
  * @param event The change event of a input text html element.
  */
 const setupName: ActionFunction<ChangeEvent<HTMLInputElement>> = (event: ChangeEvent<HTMLInputElement>) => {
-
-  const nameAction: Action<DummyPayload> = createAction(
-    DummyActionTypes.NAME_SETUP,
+  const namePayloadAction: Action<DummyPayload> = createAction(
+    DummyActionTypes.DUMMY_NAME_SETUP_ACTION,
     (name: string) => set('data.items[0].name', name, { id: 'MOCKED_DATA' }),
   )(event.target.value);
 
-  return (dispatch: Dispatch<Action<DummyPayload>>) => dispatch(nameAction);
+  return (dispatch: Dispatch<Action<DummyPayload>>) => dispatch(namePayloadAction);
 };
 
 /**

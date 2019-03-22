@@ -17,9 +17,10 @@ declare const window: Window & {
   readonly __REDUX_DEVTOOLS_EXTENSION__?: () => DeepPartial<AppState>;
 };
 
-const devTools: DeepPartial<AppState> = process.env.NODE_ENV === 'development' && !!window.__REDUX_DEVTOOLS_EXTENSION__
-  ? window.__REDUX_DEVTOOLS_EXTENSION__()
-  : {};
+const devTools: DeepPartial<AppState> =
+  process.env.NODE_ENV === 'development' && !!window.__REDUX_DEVTOOLS_EXTENSION__
+    ? window.__REDUX_DEVTOOLS_EXTENSION__()
+    : {};
 
 const store: Store = applyMiddleware(thunk, promise, history, logger)(createStore)(reducers, devTools);
 
@@ -30,7 +31,8 @@ export default render(
     </ConnectedRouter>
   </Provider>,
   document.getElementById('app'),
-  () => process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator
-    ? window.addEventListener('load', async () => navigator.serviceWorker.register('./service-worker.js'))
-    : undefined,
+  () =>
+    process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator
+      ? window.addEventListener('load', async () => navigator.serviceWorker.register('./service-worker.js'))
+      : undefined,
 );

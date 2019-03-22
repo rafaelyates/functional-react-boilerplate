@@ -1,10 +1,12 @@
 'use strict';
 
+const path = require('path');
 const htmlnano = require('htmlnano');
 const posthtmlParser = require('posthtml-parser');
 const posthtmlInclude = require('posthtml-include');
 
-const projectRoot = __dirname || process.cwd();
+const configsRoot = __dirname || process.cwd();
+const projectRoot = path.resolve(configsRoot, '..');
 
 module.exports = {
   ident: 'posthtml',

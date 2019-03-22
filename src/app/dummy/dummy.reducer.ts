@@ -19,8 +19,10 @@ const initialState: DummyState = {
  * @param state The current state.
  * @param action The action with the modification payload.
  */
-const handleNameSetup: ReducerFunction<DummyState> = (state: DummyState = initialState, action: Action<DummyPayload>) => {
-
+const handleNameSetup: ReducerFunction<DummyState> = (
+  state: DummyState = initialState,
+  action: Action<DummyPayload>,
+) => {
   const name: string | undefined = get('payload.data.items[0].name', action) as string;
 
   return { ...state, name };
@@ -30,7 +32,7 @@ const handleNameSetup: ReducerFunction<DummyState> = (state: DummyState = initia
  * Maps all the actions to it's corresponding reducer functions, always delivering a state.
  */
 const actionsRecord: Record<DummyActionTypes, ReducerFunction<DummyState>> = {
-  [DummyActionTypes.NAME_SETUP]: handleNameSetup,
+  [DummyActionTypes.DUMMY_NAME_SETUP_ACTION]: handleNameSetup,
 };
 
 const dummyReducer: Reducer = handleActions(actionsRecord, initialState);

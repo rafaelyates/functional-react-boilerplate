@@ -1,8 +1,10 @@
 {
   "recommendations": [
     "editorconfig.editorconfig",
-    "shinnn.stylelint",
     "eg2.tslint",
-    "rbbit.typescript-hero"
+    "esbenp.prettier-vscode",
+    "mikestead.dotenv",
+    "rbbit.typescript-hero",
+    "shinnn.stylelint"
   ]
 }

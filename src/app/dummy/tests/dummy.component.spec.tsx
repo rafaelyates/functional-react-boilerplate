@@ -9,7 +9,6 @@ import DummyComponent from '@app/dummy/dummy.component';
 import { DummyState } from '@app/dummy/dummy.models';
 
 describe('Dummy Component', () => {
-
   const initialState: Partial<AppState> = {
     dummy: { name: 'component name' },
   };
@@ -23,5 +22,4 @@ describe('Dummy Component', () => {
     expect(wrapper).toBeDefined();
     expect(wrapper.props().name).toBe('component name');
   });
-
 });

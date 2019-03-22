@@ -38,12 +38,18 @@ const PurifyCSSPlugin = require('purifycss-webpack');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlMinifierPlugin = require('html-minifier-webpack-plugin');
 
-const packageJson = require('./package.json');
-const projectRoot = __dirname || process.cwd();
+const configsRoot = __dirname || process.cwd();
+const projectRoot = path.resolve(configsRoot, '..');
 
 const sourcesRoot = path.join(projectRoot, 'src');
 const destination = path.join(projectRoot, 'dist');
 const nodeModules = path.join(projectRoot, 'node_modules');
+
+const typesConfig = path.join(projectRoot, 'tsconfig.json');
+const babelConfig = path.join(projectRoot, 'babel.config.js');
+const packageFile = path.join(projectRoot, 'package.json');
+
+const packageJson = require(packageFile);
 
 const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'scripts', 'vendor', 'main'];
 const extSuffixes = ['.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.scss', '.json'];
@@ -71,7 +77,10 @@ module.exports = (env, argv) => {
     },
     {
       loader: require.resolve('postcss-loader'),
-      options: { sourceMap: true }
+      options: {
+        sourceMap: true,
+        config: { path: configsRoot },
+      }
     },
     {
       loader: require.resolve('resolve-url-loader'),
@@ -83,13 +92,13 @@ module.exports = (env, argv) => {
     }
   ];
 
-  return ({
+  return {
     bail: !isDevMode,
     devtool: false,
     entry: {
       main: [path.join(sourcesRoot, 'main.tsx')],
       polyfills: [path.join(sourcesRoot, 'polyfills.ts')],
-      styles: [path.join(sourcesRoot, 'styles.scss')]
+      styles: [path.join(sourcesRoot, 'styles.scss')],
     },
     output: {
       path: destination,
@@ -110,20 +119,17 @@ module.exports = (env, argv) => {
     },
     stats: {
       colors: true,
-      errorDetails: true
+      errorDetails: true,
     },
     performance: {
-      hints: false
+      hints: false,
     },
     resolve: {
       extensions: extSuffixes,
       modules: [sourcesRoot, nodeModules],
       mainFields: ['browser', 'module', 'main'],
       symlinks: true,
-      plugins: [
-        new TsconfigPathsPlugin({ configFile: path.join(projectRoot, 'tsconfig.json') }),
-        new DirectoryNamedWebpackPlugin(true),
-      ]
+      plugins: [new TsconfigPathsPlugin({ configFile: typesConfig }), new DirectoryNamedWebpackPlugin(true)],
     },
     resolveLoader: {
       modules: [nodeModules],
@@ -135,9 +141,7 @@ module.exports = (env, argv) => {
           test: /\.jsx?$/,
           exclude: excludePath,
           enforce: 'pre',
-          use: [
-            { loader: require.resolve('source-map-loader') }
-          ]
+          use: [{ loader: require.resolve('source-map-loader') }],
         },
         {
           test: /\.tsx?$/,
@@ -150,22 +154,25 @@ module.exports = (env, argv) => {
             {
               loader: require.resolve('happypack/loader'),
               options: { id: 'typescript' },
-            }
-          ]
+            },
+          ],
         },
         {
           test: /\.html$/,
           exclude: excludePath,
           use: [
             { loader: require.resolve('html-loader') },
-            { loader: require.resolve('posthtml-loader') },
-          ]
+            {
+              loader: require.resolve('posthtml-loader'),
+              options: {
+                config: { path: configsRoot },
+              },
+            },
+          ],
         },
         {
           test: /\.json$/,
-          use: [
-            { loader: require.resolve('json-loader') }
-          ]
+          use: [{ loader: require.resolve('json-loader') }],
         },
         {
           test: /\.(jpg|jpe|gif|png|ico|svg|bmp|webp)$/,
@@ -175,13 +182,11 @@ module.exports = (env, argv) => {
               loader: require.resolve('image-webpack-loader'),
               options: { disable: isDevMode },
             },
-          ]
+          ],
         },
         {
           test: /\.(ani|cur|eot|otf|ttf|woff|woff2)$/,
-          use: [
-            { loader: require.resolve('url-loader') },
-          ]
+          use: [{ loader: require.resolve('url-loader') }],
         },
         {
           test: /\.scss$/,
@@ -194,8 +199,8 @@ module.exports = (env, argv) => {
             {
               loader: require.resolve('happypack/loader'),
               options: { id: 'style-simple' },
-            }
-          ]
+            },
+          ],
         },
         {
           test: /\.module\.scss$/,
@@ -207,10 +212,10 @@ module.exports = (env, argv) => {
             {
               loader: require.resolve('happypack/loader'),
               options: { id: 'style-module' },
-            }
-          ]
+            },
+          ],
         },
-      ]
+      ],
     },
     optimization: {
       namedModules: true,
@@ -238,14 +243,12 @@ module.exports = (env, argv) => {
           assetNameRegExp: /\.scss$/,
           cssProcessor: cssnano,
           cssProcessorPluginOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }]
+            preset: ['default', { discardComments: { removeAll: true } }],
           },
           canPrint: true,
         }),
         new PurifyCSSPlugin({
-          paths: glob.sync([
-            path.join(sourcesRoot, '*.html')
-          ]),
+          paths: glob.sync([path.join(sourcesRoot, '*.html')]),
           minimize: true,
           styleExtensions: ['.scss'],
           moduleExtensions: ['.html'],
@@ -266,22 +269,20 @@ module.exports = (env, argv) => {
       new SourceMapDevToolPlugin({
         exclude: excludePath,
         test: /\.(js|jsx|ts|tsx|css|scss)$/,
-        filename: isDevMode
-          ? undefined
-          : '[file].map[query]',
+        filename: isDevMode ? undefined : '[file].map[query]',
         moduleFilenameTemplate: '[resource-path]',
         fallbackModuleFilenameTemplate: '[resource-path]?[hash:8]',
-        sourceRoot: 'webpack:///'
+        sourceRoot: 'webpack:///',
       }),
       new CircularDependencyPlugin({
         exclude: excludePath,
         failOnError: !isDevMode,
         onDetected: false,
-        cwd: projectRoot
+        cwd: projectRoot,
       }),
       new MiniCssExtractPlugin({
         filename: 'static/css/[name].[hash:8].style.css',
-        chunkFilename: 'static/css/chunks/[id].[hash:8].chunk.css'
+        chunkFilename: 'static/css/chunks/[id].[hash:8].chunk.css',
       }),
       new HappyPack({
         id: 'style-simple',
@@ -303,10 +304,8 @@ module.exports = (env, argv) => {
         chunksSortMode: (left, right) => {
           const leftIndex = entryPoints.indexOf(left.names[0]);
           const rightIndex = entryPoints.indexOf(right.names[0]);
-          return leftIndex > rightIndex ?  1
-              :  leftIndex < rightIndex ? -1
-                                        :  0;
-        }
+          return leftIndex > rightIndex ? 1 : leftIndex < rightIndex ? -1 : 0;
+        },
       }),
       new ScriptExtHtmlWebpackPlugin({
         defaultAttribute: 'defer',
@@ -321,7 +320,7 @@ module.exports = (env, argv) => {
       new HashedModuleIdsPlugin({
         hashFunction: 'sha256',
         hashDigest: 'base64',
-        hashDigestLength: 20
+        hashDigestLength: 20,
       }),
       new ManifestPlugin({
         fileName: 'static/json/asset-manifest.json',
@@ -332,7 +331,7 @@ module.exports = (env, argv) => {
       }),
       new WebpackPwaManifest({
         filename: 'static/json/manifest.json',
-        name: packageJson.name,
+        name: packageJson,
         description: packageJson.description,
         inject: true,
         fingerprints: true,
@@ -352,22 +351,28 @@ module.exports = (env, argv) => {
       }),
       new ForkTsCheckerWebpackPlugin({
         async: false,
-        tsconfig: path.join(projectRoot, 'tsconfig.json'),
+        tsconfig: typesConfig,
         tslint: !isDevMode,
-        checkSyntacticErrors: true
+        checkSyntacticErrors: true,
       }),
       new HappyPack({
         id: 'typescript',
         loaders: [
-          { loader: require.resolve('babel-loader') },
+          {
+            loader: require.resolve('babel-loader'),
+            options: {
+              configFile: babelConfig,
+            },
+          },
           {
             loader: require.resolve('ts-loader'),
             options: {
               transpileOnly: true,
               happyPackMode: true,
-            }
+              configFile: typesConfig,
+            },
           },
-        ]
+        ],
       }),
       new NamedModulesPlugin(),
       new FriendlyErrorsWebpackPlugin(),
@@ -389,5 +394,5 @@ module.exports = (env, argv) => {
       net: 'empty',
       child_process: 'empty',
     },
-  });
+  };
 }

@@ -1,6 +1,6 @@
 'use strict';
 
-const isHeadless = process.env.HEADLESS === 'true';
+const isHeadless = process.env.JEST_HEADLESS === 'true';
 
 module.exports = {
   launch: {

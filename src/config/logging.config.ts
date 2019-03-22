@@ -6,12 +6,8 @@ const isDevelopment: boolean = process.env.NODE_ENV === 'development';
 const middlewareRegexp: RegExp = /^\@\@/;
 
 const logger: Middleware = createLogger({
-  predicate: (state: unknown, action: Action<unknown>) => (
-    isDevelopment && !middlewareRegexp.test(action.type)
-  ),
-  collapsed: (state: unknown, action: Action<unknown>, entry?: LogEntryObject) => (
-    !!entry && !entry.error
-  ),
+  predicate: (state: unknown, action: Action<unknown>) => isDevelopment && !middlewareRegexp.test(action.type),
+  collapsed: (state: unknown, action: Action<unknown>, entry?: LogEntryObject) => !!entry && !entry.error,
 });
 
 export { logger };
