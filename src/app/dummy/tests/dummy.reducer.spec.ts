@@ -2,9 +2,10 @@ import { Action } from 'redux-actions';
 
 import { set } from 'lodash/fp';
 
-import { DummyActionTypes } from '@app/dummy/dummy.actions';
-import { DummyPayload, DummyState } from '@app/dummy/dummy.models';
+import { DummyActionTypes } from '@app/dummy/dummy.constants';
+import { DummyState } from '@app/dummy/dummy.models';
 import { dummyReducer } from '@app/dummy/dummy.reducer';
+import { DummyPayload } from '@app/dummy/dummy.types';
 
 describe('Dummy Reducer', () => {
   const defaultState: DummyState = { name: '' };

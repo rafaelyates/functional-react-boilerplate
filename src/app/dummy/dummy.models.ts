@@ -2,17 +2,10 @@ import { ChangeEvent } from 'react';
 
 import { ActionCreator } from 'redux';
 
-import { Payload } from '@app/shared/models/payload.models';
+import { OutputSelector } from 'reselect';
 
-/**
- * The dummy payload.
- */
-export declare type DummyPayload = Payload<DummyState>;
-
-/**
- * The overall dummy form properties.
- */
-export declare type DummyProps = DummyState & DummyActions;
+import { AppState } from '@app/app.models';
+import { DummyNameSelector } from '@app/dummy/dummy.types';
 
 /**
  * Maps the component properties.
@@ -33,4 +26,11 @@ export interface DummyActions {
  */
 export interface DummyForm {
   readonly userName: string;
+}
+
+/**
+ * Maps all the selectors constraints.
+ */
+export interface DummySelectors {
+  readonly getCapitalizedName: OutputSelector<AppState, string, DummyNameSelector>;
 }

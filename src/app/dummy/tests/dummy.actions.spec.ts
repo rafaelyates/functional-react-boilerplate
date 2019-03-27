@@ -5,8 +5,9 @@ import { Action } from 'redux-actions';
 
 import { set } from 'lodash/fp';
 
-import { dummyActions, DummyActionTypes } from '@app/dummy/dummy.actions';
-import { DummyPayload } from '@app/dummy/dummy.models';
+import { dummyActions } from '@app/dummy/dummy.actions';
+import { DummyActionTypes } from '@app/dummy/dummy.constants';
+import { DummyPayload } from '@app/dummy/dummy.types';
 
 describe('Dummy Actions', () => {
   it('should correctly build a nameSetup action', () => {

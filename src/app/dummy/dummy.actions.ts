@@ -4,15 +4,10 @@ import { Action, createAction } from 'redux-actions';
 
 import { set } from 'lodash/fp';
 
-import { DummyActions, DummyPayload } from '@app/dummy/dummy.models';
+import { DummyActionTypes } from '@app/dummy/dummy.constants';
+import { DummyActions } from '@app/dummy/dummy.models';
+import { DummyPayload } from '@app/dummy/dummy.types';
 import { ActionFunction } from '@app/shared/models/function.models';
-
-/**
- * Enumerates the possible dispatch actions.
- */
-enum DummyActionTypes {
-  DUMMY_NAME_SETUP_ACTION = 'DUMMY_NAME_SETUP',
-}
 
 /**
  * Function invoked to a {@link DummyActionTypes.NAME_SETUP} action.
@@ -32,4 +27,4 @@ const setupName: ActionFunction<ChangeEvent<HTMLInputElement>> = (event: ChangeE
  */
 const dummyActions: Required<DummyActions> = { setupName };
 
-export { DummyActionTypes, dummyActions };
+export { dummyActions };

@@ -1,7 +1,7 @@
 import { Fragment, FunctionComponent, lazy, memo, ReactNode } from 'react';
 
 import { LazyLoadedComponent } from '@app/app.models';
-import { DummyProps } from '@app/dummy/dummy.models';
+import { DummyProps } from '@app/dummy/dummy.types';
 
 const Component: LazyLoadedComponent<DummyProps> = lazy(async () => import('@app/dummy/dummy.component'));
 

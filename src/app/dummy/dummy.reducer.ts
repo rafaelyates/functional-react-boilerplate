@@ -3,8 +3,9 @@ import { Action, handleActions } from 'redux-actions';
 
 import { get } from 'lodash/fp';
 
-import { DummyActionTypes } from '@app/dummy/dummy.actions';
-import { DummyPayload, DummyState } from '@app/dummy/dummy.models';
+import { DummyActionTypes } from '@app/dummy/dummy.constants';
+import { DummyState } from '@app/dummy/dummy.models';
+import { DummyPayload } from '@app/dummy/dummy.types';
 import { ReducerFunction } from '@app/shared/models/function.models';
 
 /**
