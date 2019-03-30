@@ -7,7 +7,7 @@ import { set } from 'lodash/fp';
 import { DummyActionTypes } from '@app/dummy/dummy.constants';
 import { DummyActions } from '@app/dummy/dummy.models';
 import { DummyPayload } from '@app/dummy/dummy.types';
-import { ActionFunction } from '@app/shared/models/function.models';
+import { ActionFunction } from '@app/shared/types/function.types';
 
 /**
  * Function invoked to a {@link DummyActionTypes.NAME_SETUP} action.

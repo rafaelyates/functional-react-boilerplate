@@ -1,10 +1,11 @@
 {
   "recommendations": [
     "editorconfig.editorconfig",
-    "eg2.tslint",
     "esbenp.prettier-vscode",
     "mikestead.dotenv",
+    "ms-vscode.vscode-typescript-tslint-plugin",
     "rbbit.typescript-hero",
-    "shinnn.stylelint"
+    "shinnn.stylelint",
+    "streetsidesoftware.code-spell-checker"
   ]
 }

@@ -10,12 +10,8 @@ import dummyStyle from '@app/dummy/dummy.module.scss';
 
 import { AppState } from '@app/app.models';
 import { dummyActions } from '@app/dummy/dummy.actions';
-import { DummyForm } from '@app/dummy/dummy.models';
 import { dummySelectors } from '@app/dummy/dummy.selectors';
-import { DummyProps } from '@app/dummy/dummy.types';
-import { InjectedProps } from '@app/shared/models/redux.models';
-
-declare type DummyInjected = InjectedProps<DummyProps, DummyForm>;
+import { DummyInjected, DummyProps } from '@app/dummy/dummy.types';
 
 /**
  * The functional component.

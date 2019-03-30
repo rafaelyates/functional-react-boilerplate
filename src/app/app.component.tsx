@@ -1,4 +1,4 @@
-import { FunctionComponent, memo, Suspense } from 'react';
+import { FunctionComponent, Suspense } from 'react';
 
 import { AppRouting } from '@app/app.routing';
 

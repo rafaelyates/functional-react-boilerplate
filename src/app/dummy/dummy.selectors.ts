@@ -8,7 +8,7 @@ import { DummyNameSelector } from '@app/dummy/dummy.types';
  * Creates a selector that returns the dummy name capitalized.
  */
 const getCapitalizedName: OutputSelector<AppState, string, DummyNameSelector> = createSelector(
-  (state: AppState) => state.dummy.name || '',
+  (state: AppState) => `${state.dummy.name}`,
   (name: string) =>
     name.replace(/\w*\S/gi, (value: string) => `${value.charAt(0).toUpperCase()}${value.slice(1).toLowerCase()}`),
 );
