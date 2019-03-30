@@ -4,10 +4,7 @@
  * the formal jest configuration constraint wouldn't be able to handle it,
  * so this file picks the pipeline values and runs then sequentially.
  */
-const transformPipeline = [
-  'ts-jest',
-  'babel-jest',
-];
+const transformPipeline = ['ts-jest', 'babel-jest'];
 
 const process = (src, filename, config) => {
   return transformPipeline.reduce((acc, next) => {

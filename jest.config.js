@@ -3,8 +3,8 @@
 // https://jestjs.io/docs/en/configuration.html
 const path = require('path');
 
-const configsRoot = __dirname || process.cwd();
-const projectRoot = path.resolve(configsRoot, '..');
+const projectRoot = __dirname || process.cwd();
+const configsRoot = path.join(projectRoot, 'config');
 
 process.env.JEST_PUPPETEER_CONFIG = path.join(configsRoot, 'jest-puppeteer.config.js');
 const isUnitEnvironment = process.env.JEST_ENV === 'unit';
@@ -106,7 +106,7 @@ module.exports = {
   // resetModules: false,
 
   // A path to a custom resolver
-  // resolver: null,
+  resolver: 'jest-pnp-resolver',
 
   // Automatically restore mock state between every test
   // restoreMocks: false,
@@ -186,4 +186,7 @@ module.exports = {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+
+  // An array of plugins to be used when in watch mode
+  watchPlugins: ['jest-watch-typeahead/filename', 'jest-watch-typeahead/testname'],
 };

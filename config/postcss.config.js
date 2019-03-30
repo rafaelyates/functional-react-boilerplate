@@ -11,7 +11,6 @@ const rucksackCss = require('rucksack-css');
 const csswring = require('csswring');
 const lost = require('lost');
 
-const postcssScss = require('postcss-scss');
 const postcssImport = require('postcss-import');
 const postcssUrl = require('postcss-url');
 const postcssPresetEnv = require('postcss-preset-env');
@@ -32,12 +31,14 @@ const postcssOpacity = require('postcss-opacity');
 const postcssPseudoElements = require('postcss-pseudoelements');
 const postcssVmin = require('postcss-vmin');
 
+const customParser = require('./postcss-parser.config');
+
 const configsRoot = __dirname || process.cwd();
 const projectRoot = path.resolve(configsRoot, '..');
 
 module.exports = {
   ident: 'postcss',
-  parser: postcssScss,
+  parser: customParser,
   plugins: [
     postcssImport({ root: projectRoot }),
     postcssUrl({ useHash: true, hashOptions: 'xxhash64' }),
@@ -68,4 +69,4 @@ module.exports = {
     precss(),
     cssnano({ preset: 'default', discardUnused: true }),
   ],
-}
+};

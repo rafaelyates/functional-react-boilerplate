@@ -16,6 +16,7 @@ const { GenerateSW } = require('workbox-webpack-plugin');
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
 const DirectoryNamedWebpackPlugin = require('directory-named-webpack-plugin');
+const PnpWebpackPlugin = require('pnp-webpack-plugin');
 
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
@@ -38,11 +39,11 @@ const PurifyCSSPlugin = require('purifycss-webpack');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const HtmlMinifierPlugin = require('html-minifier-webpack-plugin');
 
-const configsRoot = __dirname || process.cwd();
-const projectRoot = path.resolve(configsRoot, '..');
+const projectRoot = __dirname || process.cwd();
 
 const sourcesRoot = path.join(projectRoot, 'src');
 const destination = path.join(projectRoot, 'dist');
+const configsRoot = path.join(projectRoot, 'config');
 const nodeModules = path.join(projectRoot, 'node_modules');
 
 const typesConfig = path.join(projectRoot, 'tsconfig.json');
@@ -129,10 +130,15 @@ module.exports = (env, argv) => {
       modules: [sourcesRoot, nodeModules],
       mainFields: ['browser', 'module', 'main'],
       symlinks: true,
-      plugins: [new TsconfigPathsPlugin({ configFile: typesConfig }), new DirectoryNamedWebpackPlugin(true)],
+      plugins: [
+        new TsconfigPathsPlugin({ configFile: typesConfig }),
+        new DirectoryNamedWebpackPlugin(true),
+        PnpWebpackPlugin,
+      ],
     },
     resolveLoader: {
       modules: [nodeModules],
+      plugins: [PnpWebpackPlugin.moduleLoader(module)],
     },
     module: {
       strictExportPresence: true,
@@ -175,7 +181,7 @@ module.exports = (env, argv) => {
           use: [{ loader: require.resolve('json-loader') }],
         },
         {
-          test: /\.(jpg|jpe|gif|png|ico|svg|bmp|webp)$/,
+          test: /\.(jpg|jpe|gif|png|ico|svg|bmp|jpeg|webp)$/,
           use: [
             { loader: require.resolve('url-loader') },
             {
@@ -221,6 +227,7 @@ module.exports = (env, argv) => {
       namedModules: true,
       namedChunks: true,
       moduleIds: 'hashed',
+      runtimeChunk: 'single',
       minimize: !isDevMode,
       minimizer: [
         new TerserPlugin({
@@ -328,10 +335,12 @@ module.exports = (env, argv) => {
       new GenerateSW({
         swDest: 'service-worker.js',
         precacheManifestFilename: 'static/js/precache-manifest.[manifestHash].js',
+        clientsClaim: true,
       }),
       new WebpackPwaManifest({
         filename: 'static/json/manifest.json',
-        name: packageJson,
+        name: `${packageJson.name}-${packageJson.version}`,
+        short_name: packageJson.name,
         description: packageJson.description,
         inject: true,
         fingerprints: true,
@@ -366,11 +375,11 @@ module.exports = (env, argv) => {
           },
           {
             loader: require.resolve('ts-loader'),
-            options: {
+            options: PnpWebpackPlugin.tsLoaderOptions({
               transpileOnly: true,
               happyPackMode: true,
               configFile: typesConfig,
-            },
+            }),
           },
         ],
       }),
@@ -387,6 +396,7 @@ module.exports = (env, argv) => {
       setImmediate: false,
       console: true,
       dgram: 'empty',
+      dns: 'mock',
       fs: 'empty',
       module: 'empty',
       crypto: 'empty',
