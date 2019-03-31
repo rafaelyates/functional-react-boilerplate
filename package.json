@@ -6,8 +6,8 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "webpack-dev-server --progress --colors --inline --mode development",
-    "build": "webpack --progress --colors --inline --mode production",
+    "start": "cross-env NODE_ENV=development webpack-dev-server --color --progress",
+    "build": "cross-env NODE_ENV=production webpack --progress",
     "serve:dist": "http-server ./dist -p 8080 --cors",
     "lint": "npm-run-all -s lint:types lint:style lint:pretty",
     "lint:pretty": "prettier --check \"{src,e2e}/**/*.{ts,tsx,scss}\" --config .prettierrc",

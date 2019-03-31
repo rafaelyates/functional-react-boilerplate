@@ -13,7 +13,7 @@
     "emitBOM": true,
     "sourceMap": true,
     "removeComments": true,
-    "declaration": false,
+    "declaration": true,
     "skipLibCheck": false,
     "preserveConstEnums": true,
     /* React Options */
@@ -43,12 +43,7 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     /* Libraries */
-    "lib": [
-      "esnext",
-      "esnext.asynciterable",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["esnext", "esnext.asynciterable", "dom", "dom.iterable"],
     "paths": {
       "@app/*": ["src/app/*"],
       "@conf/*": ["src/config/*"],
