@@ -55,16 +55,10 @@ const packageJson = require(packageFile);
 const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'scripts', 'vendor', 'main'];
 const extSuffixes = ['.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.scss', '.json'];
 
-const excludePath = new RegExp([
-    /node_modules/,
-    /\.(spec|test).(j|t)sx?$/,
-  ]
-  .map((regExp) => regExp.source)
-  .join('|')
-);
+const excludePath = new RegExp([/node_modules/, /\.(spec|test).(j|t)sx?$/].map((regExp) => regExp.source).join('|'));
 
 module.exports = (env, argv) => {
-  const isDevMode = (argv.mode === 'development');
+  const isDevMode = argv.mode === 'development';
 
   const scssLoaders = (isModular) => [
     {
@@ -81,16 +75,16 @@ module.exports = (env, argv) => {
       options: {
         sourceMap: true,
         config: { path: configsRoot },
-      }
+      },
     },
     {
       loader: require.resolve('resolve-url-loader'),
-      options: { sourceMap: true }
+      options: { sourceMap: true },
     },
     {
       loader: require.resolve('sass-loader'),
-      options: { sourceMap: true }
-    }
+      options: { sourceMap: true },
+    },
   ];
 
   return {
@@ -153,10 +147,6 @@ module.exports = (env, argv) => {
           test: /\.tsx?$/,
           exclude: excludePath,
           use: [
-            {
-              loader: require.resolve('react-hot-loader/webpack'),
-              options: { sourceMap: true },
-            },
             {
               loader: require.resolve('happypack/loader'),
               options: { id: 'typescript' },
@@ -405,4 +395,4 @@ module.exports = (env, argv) => {
       child_process: 'empty',
     },
   };
-}
+};
