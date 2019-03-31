@@ -2,13 +2,13 @@
   "compileOnSave": false,
   "compilerOptions": {
     /* Module Resolution Options */
-    "moduleResolution": "node",
     "baseUrl": "./",
     "outDir": "./dist",
-    /* Basic Options */
     "module": "esnext",
     "target": "esnext",
-    "pretty": false,
+    "moduleResolution": "node",
+    /* Basic Options */
+    "pretty": true,
     "noEmit": false,
     "emitBOM": true,
     "sourceMap": true,
@@ -21,6 +21,7 @@
     /* Babel integrtion options */
     "esModuleInterop": true,
     "isolatedModules": true,
+    "resolveJsonModule": true,
     /* TypeScript helper functions */
     "importHelpers": true,
     /* Strict Type-Checking Options */
