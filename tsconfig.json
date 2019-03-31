@@ -13,7 +13,7 @@
     "emitBOM": true,
     "sourceMap": true,
     "removeComments": true,
-    "declaration": true,
+    "declaration": false,
     "skipLibCheck": false,
     "preserveConstEnums": true,
     /* React Options */
