@@ -54,7 +54,7 @@ const packageFile = path.join(projectRoot, 'package.json');
 const packageJson = require(packageFile);
 
 const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'scripts', 'vendor', 'main'];
-const extSuffixes = ['.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.scss', '.json'];
+const extSuffixes = ['.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.sass', '.scss', '.json'];
 
 const excludePath = new RegExp([/node_modules/, /\.(spec|test).(j|t)sx?$/].map((regExp) => regExp.source).join('|'));
 
@@ -184,8 +184,8 @@ module.exports = {
         use: [{ loader: require.resolve('url-loader') }],
       },
       {
-        test: /\.scss$/,
-        exclude: /\.module\.scss$/,
+        test: /\.(css|sass|scss)$/,
+        exclude: /\.module\.(css|sass|scss)$/,
         use: [
           {
             loader: MiniCssExtractPlugin.loader,
@@ -198,7 +198,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.module\.scss$/,
+        test: /\.module\.(css|sass|scss)$/,
         use: [
           {
             loader: isDevMode ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
@@ -236,7 +236,7 @@ module.exports = {
         sourceMap: true,
       }),
       new OptimizeCSSAssetsPlugin({
-        assetNameRegExp: /\.scss$/,
+        assetNameRegExp: /\.(css|sass|scss)$/,
         cssProcessor: cssnano,
         cssProcessorPluginOptions: {
           preset: ['default', { discardComments: { removeAll: true } }],
@@ -246,7 +246,7 @@ module.exports = {
       new PurifyCSSPlugin({
         paths: glob.sync([path.join(sourcesRoot, '*.html')]),
         minimize: true,
-        styleExtensions: ['.scss'],
+        styleExtensions: ['.css', '.sass', '.scss'],
         moduleExtensions: ['.html'],
       }),
       new HtmlMinifierPlugin({
@@ -264,7 +264,7 @@ module.exports = {
     }),
     new SourceMapDevToolPlugin({
       exclude: excludePath,
-      test: /\.(js|jsx|ts|tsx|css|scss)$/,
+      test: /\.(js|jsx|ts|tsx|css|sass|scss)$/,
       filename: isDevMode ? undefined : '[file].map[query]',
       moduleFilenameTemplate: '[resource-path]',
       fallbackModuleFilenameTemplate: '[resource-path]?[hash:8]',
