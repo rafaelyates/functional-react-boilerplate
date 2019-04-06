@@ -56,7 +56,7 @@ const packageJson = require(packageFile);
 const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'scripts', 'vendor', 'main'];
 const extSuffixes = ['.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.sass', '.scss', '.json'];
 
-const excludePath = new RegExp([/node_modules/, /\.(spec|test).(j|t)sx?$/].map((regExp) => regExp.source).join('|'));
+const excludePath = /node_modules/;
 
 const scssLoaders = (isModular) => [
   {
@@ -84,6 +84,23 @@ const scssLoaders = (isModular) => [
     options: { sourceMap: true },
   },
 ];
+
+const imageEnhancer = (isDisabled) => ({
+  loader: require.resolve('image-webpack-loader'),
+  options: { disable: isDisabled },
+});
+
+const pwaIcons = (isDevelopment) =>
+  isDevelopment
+    ? []
+    : [
+        {
+          src: path.join(sourcesRoot, 'favicon.ico'),
+          sizes: [16, 24, 32, 64],
+          type: 'image/x-icon',
+          destination: path.join('static', 'icons'),
+        },
+      ];
 
 module.exports = {
   bail: !isDevMode,
@@ -153,8 +170,35 @@ module.exports = {
         ],
       },
       {
-        test: /\.html$/,
+        test: /\.(sass|scss)$/,
+        exclude: /\.module\.(css|sass|scss)$/,
+        use: [
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: { sourceMap: true },
+          },
+          {
+            loader: require.resolve('happypack/loader'),
+            options: { id: 'style-simple' },
+          },
+        ],
+      },
+      {
+        test: /\.module\.(sass|scss)$/,
         exclude: excludePath,
+        use: [
+          {
+            loader: isDevMode ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
+            options: { sourceMap: true },
+          },
+          {
+            loader: require.resolve('happypack/loader'),
+            options: { id: 'style-module' },
+          },
+        ],
+      },
+      {
+        test: /\.html$/,
         use: [
           { loader: require.resolve('html-loader') },
           {
@@ -170,45 +214,16 @@ module.exports = {
         use: [{ loader: require.resolve('json-loader') }],
       },
       {
-        test: /\.(jpg|jpe|gif|png|ico|svg|bmp|jpeg|webp)$/,
-        use: [
-          { loader: require.resolve('url-loader') },
-          {
-            loader: require.resolve('image-webpack-loader'),
-            options: { disable: isDevMode },
-          },
-        ],
+        test: /\.(jpg|jpe|gif|png|ico|bmp|jpeg|webp)$/,
+        use: [{ loader: require.resolve('url-loader') }, imageEnhancer(isDevMode)],
+      },
+      {
+        test: /\.svg$/,
+        use: [{ loader: require.resolve('svg-url-loader') }, imageEnhancer(isDevMode)],
       },
       {
         test: /\.(ani|cur|eot|otf|ttf|woff|woff2)$/,
         use: [{ loader: require.resolve('url-loader') }],
-      },
-      {
-        test: /\.(css|sass|scss)$/,
-        exclude: /\.module\.(css|sass|scss)$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: { sourceMap: true },
-          },
-          {
-            loader: require.resolve('happypack/loader'),
-            options: { id: 'style-simple' },
-          },
-        ],
-      },
-      {
-        test: /\.module\.(css|sass|scss)$/,
-        use: [
-          {
-            loader: isDevMode ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
-            options: { sourceMap: true },
-          },
-          {
-            loader: require.resolve('happypack/loader'),
-            options: { id: 'style-module' },
-          },
-        ],
       },
     ],
   },
@@ -236,7 +251,7 @@ module.exports = {
         sourceMap: true,
       }),
       new OptimizeCSSAssetsPlugin({
-        assetNameRegExp: /\.(css|sass|scss)$/,
+        assetNameRegExp: /\.(sass|scss)$/,
         cssProcessor: cssnano,
         cssProcessorPluginOptions: {
           preset: ['default', { discardComments: { removeAll: true } }],
@@ -246,7 +261,7 @@ module.exports = {
       new PurifyCSSPlugin({
         paths: glob.sync([path.join(sourcesRoot, '*.html')]),
         minimize: true,
-        styleExtensions: ['.css', '.sass', '.scss'],
+        styleExtensions: ['.sass', '.scss'],
         moduleExtensions: ['.html'],
       }),
       new HtmlMinifierPlugin({
@@ -338,17 +353,10 @@ module.exports = {
       display: 'standalone',
       theme_color: '#000000',
       background_color: '#ffffff',
-      icons: [
-        {
-          src: path.join(sourcesRoot, 'favicon.ico'),
-          sizes: [16, 24, 32, 64],
-          type: 'image/x-icon',
-          destination: path.join('static', 'icons'),
-        },
-      ],
+      icons: pwaIcons(isDevMode),
     }),
     new ForkTsCheckerWebpackPlugin({
-      async: false,
+      async: true,
       tsconfig: typesConfig,
       tslint: !isDevMode,
       checkSyntacticErrors: true,
