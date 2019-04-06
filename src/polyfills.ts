@@ -9,6 +9,16 @@ import 'core-js/client/shim';
 import 'core-js/es7/reflect';
 
 /**
+ * Event, CustomEvent, MouseEvent...
+ */
+import 'events-polyfill';
+
+/**
+ * Polyfill for element.classList.
+ */
+import 'classlist-polyfill';
+
+/**
  * Date, currency, decimal and percent pipes.
  */
 import 'intl';

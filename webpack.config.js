@@ -29,6 +29,7 @@ const WebpackPwaManifest = require('webpack-pwa-manifest');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
@@ -274,9 +275,8 @@ module.exports = {
   plugins: [
     new NoEmitOnErrorsPlugin(),
     new CaseSensitivePathsPlugin(),
-    new HotModuleReplacementPlugin({
-      log: false,
-    }),
+    new CleanWebpackPlugin(),
+    new HotModuleReplacementPlugin(),
     new SourceMapDevToolPlugin({
       exclude: excludePath,
       test: /\.(js|jsx|ts|tsx|css|sass|scss)$/,

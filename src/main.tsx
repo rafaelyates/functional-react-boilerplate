@@ -1,12 +1,11 @@
 import { render } from 'react-dom';
 import { Provider } from 'react-redux';
 
-import { ConnectedRouter } from 'connected-react-router';
+import { PersistGate } from 'redux-persist/integration/react';
 
 import { AppComponent } from '@app/app.component';
-import { browserHistory } from '@conf/routing.config';
 import { serviceWorkerHook } from '@conf/service-worker.config';
-import { store } from '@conf/store.config';
+import { persistor, store } from '@conf/store.config';
 
 /**
  * Renders the react application with redux storage.
@@ -14,9 +13,9 @@ import { store } from '@conf/store.config';
  */
 export default render(
   <Provider store={store}>
-    <ConnectedRouter history={browserHistory}>
+    <PersistGate persistor={persistor}>
       <AppComponent />
-    </ConnectedRouter>
+    </PersistGate>
   </Provider>,
   document.getElementById('app'),
   serviceWorkerHook,

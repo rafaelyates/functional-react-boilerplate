@@ -1,6 +1,9 @@
-import { applyMiddleware, compose, createStore, Store, StoreEnhancer } from 'redux';
+import { applyMiddleware, compose, createStore, Reducer, Store, StoreEnhancer } from 'redux';
+import { PersistConfig, Persistor, persistReducer, persistStore } from 'redux-persist';
 import promise from 'redux-promise';
 import thunk from 'redux-thunk';
+
+import localForage from 'localforage';
 
 import { logger } from '@conf/logging.config';
 import { reducers } from '@conf/reducers.config';
@@ -11,6 +14,14 @@ import { history } from '@conf/routing.config';
  * For a list of options to be passed here.
  */
 const devToolsOptions: Object = {};
+
+/**
+ * The configurations used by redux to persist the store.
+ */
+const persistConfig: PersistConfig = {
+  key: 'root',
+  storage: localForage,
+};
 
 /**
  * Merges default javascript window with custom properties,
@@ -31,14 +42,19 @@ const composeEnhancers: <R>(a: R) => R =
     : compose;
 
 /**
- * Creates the store as follows:
- *
+ * Creates the store enhancers as follows:
  * - The redux middleware list to be used.
  * - Composes the enhancers.
- * - Build it based on the reducers and enhancers.
+ * - The reducers persisted.
  */
 const middleware: StoreEnhancer = applyMiddleware(thunk, promise, history, logger);
 const enhancer: StoreEnhancer = composeEnhancers(middleware);
-const store: Store = createStore(reducers, enhancer);
+const persistedReducers: Reducer = persistReducer(persistConfig, reducers);
 
-export { store };
+/**
+ * Creates the store and it's persistor.
+ */
+const store: Store = createStore(persistedReducers, enhancer);
+const persistor: Persistor = persistStore(store);
+
+export { store, persistor };
