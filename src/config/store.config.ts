@@ -5,6 +5,7 @@ import thunk from 'redux-thunk';
 
 import localForage from 'localforage';
 
+import { environment } from '@conf/environment.config';
 import { logger } from '@conf/logging.config';
 import { reducers } from '@conf/reducers.config';
 import { history } from '@conf/routing.config';
@@ -37,7 +38,7 @@ declare const window: Window & {
  * the preset options, otherwise it uses the default redux compose function.
  */
 const composeEnhancers: <R>(a: R) => R =
-  process.env.NODE_ENV === 'development' && !!window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
+  environment.NODE_ENV === 'development' && !!window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
     ? window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__(devToolsOptions)
     : compose;
 

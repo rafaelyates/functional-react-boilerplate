@@ -22,6 +22,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const HappyPack = require('happypack');
 
+const Dotenv = require('dotenv-webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const WebpackPwaManifest = require('webpack-pwa-manifest');
@@ -47,10 +48,14 @@ const sourcesRoot = path.join(projectRoot, 'src');
 const destination = path.join(projectRoot, 'dist');
 const configsRoot = path.join(projectRoot, 'config');
 const nodeModules = path.join(projectRoot, 'node_modules');
+const dotEnvFiles = path.join(projectRoot, 'env');
 
 const typesConfig = path.join(projectRoot, 'tsconfig.json');
 const babelConfig = path.join(projectRoot, 'babel.config.js');
 const packageFile = path.join(projectRoot, 'package.json');
+
+const envDev = path.join(dotEnvFiles, '.env.development');
+const envProd = path.join(dotEnvFiles, '.env.production');
 
 const packageJson = require(packageFile);
 
@@ -255,12 +260,13 @@ module.exports = {
         assetNameRegExp: /\.(sass|scss)$/,
         cssProcessor: cssnano,
         cssProcessorPluginOptions: {
+          map: { inline: false, annotation: true },
           preset: ['default', { discardComments: { removeAll: true } }],
         },
         canPrint: true,
       }),
       new PurifyCSSPlugin({
-        paths: glob.sync([path.join(sourcesRoot, '*.html')]),
+        paths: glob.sync([path.join(sourcesRoot, '**', '*')], { nodir: true }),
         minimize: true,
         styleExtensions: ['.sass', '.scss'],
         moduleExtensions: ['.html'],
@@ -277,6 +283,13 @@ module.exports = {
     new CaseSensitivePathsPlugin(),
     new CleanWebpackPlugin(),
     new HotModuleReplacementPlugin(),
+    new Dotenv({
+      path: isDevMode ? envDev : envProd,
+      safe: true,
+      silent: true,
+      systemvars: true,
+      defaults: false,
+    }),
     new SourceMapDevToolPlugin({
       exclude: excludePath,
       test: /\.(js|jsx|ts|tsx|css|sass|scss)$/,
