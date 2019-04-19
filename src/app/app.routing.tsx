@@ -1,13 +1,27 @@
-import { FunctionComponent } from 'react';
-import { Redirect, Route, Switch } from 'react-router-dom';
+import { FunctionComponent, lazy } from 'react';
+import { Route, Switch, withRouter } from 'react-router-dom';
 
-import { DummyLoader } from '@app/dummy/dummy.loader';
+import { RouteData, Routing } from '@app/app.types';
+import { DummyProps } from '@app/dummy/dummy.types';
+import { LazyLoadedComponent } from '@app/shared/types/component.types';
 
-const AppRouting: FunctionComponent<unknown> = () => (
+const routes: ReadonlyArray<RouteData> = [
+  {
+    path: '/',
+    render: (routing: Routing) => {
+      const DummyComponent: LazyLoadedComponent<DummyProps> = lazy(async () => import('@app/dummy/dummy.component'));
+
+      return <DummyComponent {...routing} />;
+    },
+  },
+];
+
+const AppRouting: FunctionComponent<Routing> = (props: Routing) => (
   <Switch>
-    <Redirect exact={true} from="/" to="/dummy" />
-    <Route path="/dummy" render={DummyLoader} />
+    {routes.map((route: RouteData, index: number) => (
+      <Route key={index} path={route.path} render={route.render} />
+    ))}
   </Switch>
 );
 
-export { AppRouting };
+export default withRouter(AppRouting);

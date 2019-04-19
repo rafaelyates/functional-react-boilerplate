@@ -3,13 +3,13 @@ import { hot } from 'react-hot-loader/root';
 
 import { ConnectedRouter } from 'connected-react-router';
 
-import { AppRouting } from '@app/app.routing';
+import AppRouting from '@app/app.routing';
 import { browserHistory } from '@conf/routing.config';
 
 /**
  * This is the root component of the project.
  */
-const AppComponent: FunctionComponent<unknown> = hot(() => (
+const AppComponent: FunctionComponent<unknown> = () => (
   <ConnectedRouter history={browserHistory}>
     <div className="container is-fluid">
       <Suspense fallback={<progress className="progress is-small is-primary" max="100" />}>
@@ -17,6 +17,6 @@ const AppComponent: FunctionComponent<unknown> = hot(() => (
       </Suspense>
     </div>
   </ConnectedRouter>
-));
+);
 
-export { AppComponent };
+export default hot(AppComponent);

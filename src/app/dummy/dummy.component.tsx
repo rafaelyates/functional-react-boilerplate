@@ -1,10 +1,8 @@
 import { FunctionComponent, memo } from 'react';
 import { connect } from 'react-redux';
 
-import { bindActionCreators, Dispatch } from 'redux';
+import { bindActionCreators, compose, Dispatch } from 'redux';
 import { Field, reduxForm } from 'redux-form';
-
-import { compose } from 'recompose';
 
 import dummyStyle from '@app/dummy/dummy.module.scss';
 
@@ -35,12 +33,12 @@ const DummyComponent: FunctionComponent<DummyInjected> = memo((props: DummyInjec
  * - Connects the component inner elements to the redux form.
  * - Connects the form component with the redux general store.
  */
-export default compose<DummyInjected, DummyProps>(
-  reduxForm({ form: 'dummyForm' }),
+export default compose<FunctionComponent<DummyProps>>(
   connect(
     (state: AppState) => ({
       name: dummySelectors.getCapitalizedName(state),
     }),
     (dispatch: Dispatch) => bindActionCreators({ ...dummyActions }, dispatch),
   ),
+  reduxForm({ form: 'dummyForm' }),
 )(DummyComponent);

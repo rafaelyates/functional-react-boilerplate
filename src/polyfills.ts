@@ -47,3 +47,8 @@ import 'react-app-polyfill/ie11';
  * Metadata reflection API
  */
 import 'reflect-metadata';
+
+/**
+ * Patches the react for hot loading.
+ */
+import 'react-hot-loader/patch';

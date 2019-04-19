@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 
 import { PersistGate } from 'redux-persist/integration/react';
 
-import { AppComponent } from '@app/app.component';
+import AppComponent from '@app/app.component';
 import { serviceWorkerHook } from '@conf/service-worker.config';
 import { persistor, store } from '@conf/store.config';
 

@@ -216,10 +216,6 @@ module.exports = {
         ],
       },
       {
-        test: /\.json$/,
-        use: [{ loader: require.resolve('json-loader') }],
-      },
-      {
         test: /\.(jpg|jpe|gif|png|ico|bmp|jpeg|webp)$/,
         use: [{ loader: require.resolve('url-loader') }, imageEnhancer(isDevMode)],
       },

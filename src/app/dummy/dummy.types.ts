@@ -1,3 +1,4 @@
+import { Routing } from '@app/app.types';
 import { DummyActions, DummyForm, DummyState } from '@app/dummy/dummy.models';
 import { Payload } from '@app/shared/models/payload.models';
 import { InjectedProps } from '@app/shared/types/redux.types';
@@ -10,7 +11,7 @@ export declare type DummyPayload = Payload<DummyState>;
 /**
  * The overall dummy form properties.
  */
-export declare type DummyProps = DummyState & DummyActions;
+export declare type DummyProps = DummyState & DummyActions & Partial<Routing>;
 
 /**
  * The redux form properties.
