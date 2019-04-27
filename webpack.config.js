@@ -60,7 +60,7 @@ const envProd = path.join(dotEnvFiles, '.env.production');
 const packageJson = require(packageFile);
 
 const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'scripts', 'vendor', 'main'];
-const extSuffixes = ['.js', '.jsx', '.ts', '.tsx', '.html', '.css', '.sass', '.scss', '.json'];
+const extSuffixes = ['.js', '.jsx', 'mjs', '.ts', '.tsx', 'mts', '.html', '.css', '.sass', '.scss', '.json'];
 
 const excludePath = /node_modules/;
 
@@ -160,13 +160,13 @@ module.exports = {
     strictExportPresence: true,
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx|mjs)$/,
         exclude: excludePath,
         enforce: 'pre',
         use: [{ loader: require.resolve('source-map-loader') }],
       },
       {
-        test: /\.tsx?$/,
+        test: /\.(ts|tsx|mts)$/,
         exclude: excludePath,
         use: [
           {
@@ -288,7 +288,7 @@ module.exports = {
     }),
     new SourceMapDevToolPlugin({
       exclude: excludePath,
-      test: /\.(js|jsx|ts|tsx|css|sass|scss)$/,
+      test: /\.(js|jsx|mjs|ts|tsx|mts|css|sass|scss)$/,
       filename: isDevMode ? undefined : '[file].map[query]',
       moduleFilenameTemplate: '[resource-path]',
       fallbackModuleFilenameTemplate: '[resource-path]?[hash:8]',

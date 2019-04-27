@@ -8,4 +8,4 @@ module.exports = {
     headless: isHeadless,
     timeout: 100000,
   },
-}
+};
