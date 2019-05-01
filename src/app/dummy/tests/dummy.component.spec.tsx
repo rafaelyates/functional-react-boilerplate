@@ -8,7 +8,7 @@ import { AppState } from '@app/app.models';
 import DummyComponent from '@app/dummy/dummy.component';
 import { DummyState } from '@app/dummy/dummy.models';
 
-describe('Dummy Component', () => {
+describe('Component: DummyComponent', () => {
   const store: mockStore<AppState> = createMockStore({
     dummy: { name: '' },
   });

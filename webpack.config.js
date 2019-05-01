@@ -2,7 +2,10 @@
 
 const path = require('path');
 const glob = require('glob-all');
-const cssnano = require('cssnano');
+
+const sass = require('sass');
+const fibers = require('fibers');
+const cleanCss = require('clean-css');
 
 const {
   NoEmitOnErrorsPlugin,
@@ -66,11 +69,18 @@ const excludePath = /node_modules/;
 
 const scssLoaders = (isModular) => [
   {
+    loader: MiniCssExtractPlugin.loader,
+    options: {
+      sourceMap: true,
+      hmr: isDevMode,
+    },
+  },
+  {
     loader: require.resolve('css-loader'),
     options: {
+      sourceMap: true,
       modules: isModular,
       minimize: !isDevMode,
-      sourceMap: true,
       localIdentName: isDevMode ? '[name]_[local]' : '[hash:base64]',
     },
   },
@@ -87,7 +97,11 @@ const scssLoaders = (isModular) => [
   },
   {
     loader: require.resolve('sass-loader'),
-    options: { sourceMap: true },
+    options: {
+      sourceMap: true,
+      implementation: sass,
+      fiber: fibers,
+    },
   },
 ];
 
@@ -178,30 +192,12 @@ module.exports = {
       {
         test: /\.(sass|scss)$/,
         exclude: /\.module\.(css|sass|scss)$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader,
-            options: { sourceMap: true },
-          },
-          {
-            loader: require.resolve('happypack/loader'),
-            options: { id: 'style-simple' },
-          },
-        ],
+        use: scssLoaders(false),
       },
       {
         test: /\.module\.(sass|scss)$/,
         exclude: excludePath,
-        use: [
-          {
-            loader: isDevMode ? require.resolve('style-loader') : MiniCssExtractPlugin.loader,
-            options: { sourceMap: true },
-          },
-          {
-            loader: require.resolve('happypack/loader'),
-            options: { id: 'style-module' },
-          },
-        ],
+        use: scssLoaders(true),
       },
       {
         test: /\.html$/,
@@ -209,9 +205,7 @@ module.exports = {
           { loader: require.resolve('html-loader') },
           {
             loader: require.resolve('posthtml-loader'),
-            options: {
-              config: { path: configsRoot },
-            },
+            options: { config: { path: configsRoot } },
           },
         ],
       },
@@ -254,11 +248,8 @@ module.exports = {
       }),
       new OptimizeCSSAssetsPlugin({
         assetNameRegExp: /\.(sass|scss)$/,
-        cssProcessor: cssnano,
-        cssProcessorPluginOptions: {
-          map: { inline: false, annotation: true },
-          preset: ['default', { discardComments: { removeAll: true } }],
-        },
+        cssProcessor: cleanCss,
+        cssProcessorPluginOptions: { sourceMap: true },
         canPrint: true,
       }),
       new PurifyCSSPlugin({
@@ -303,14 +294,6 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: 'static/css/[name].[hash:8].style.css',
       chunkFilename: 'static/css/chunks/[id].[hash:8].chunk.css',
-    }),
-    new HappyPack({
-      id: 'style-simple',
-      loaders: scssLoaders(false),
-    }),
-    new HappyPack({
-      id: 'style-module',
-      loaders: scssLoaders(true),
     }),
     new HtmlWebpackPlugin({
       filename: 'index.html',

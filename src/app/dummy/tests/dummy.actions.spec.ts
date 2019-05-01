@@ -9,7 +9,7 @@ import { dummyActions } from '@app/dummy/dummy.actions';
 import { DummyActionTypes } from '@app/dummy/dummy.constants';
 import { DummyPayload } from '@app/dummy/dummy.types';
 
-describe('Dummy Actions', () => {
+describe('Action: DummyActions', () => {
   it('should correctly build a nameSetup action', () => {
     const name: string = 'action name';
 

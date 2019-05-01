@@ -4,15 +4,10 @@ module.exports = (api) => {
   api.cache(true);
 
   const nodeTarget = { node: 'current' };
-  const transformModules = ['lodash', 'recompose'];
+  const transformModules = ['lodash', 'recompose', 'async'];
 
   return {
-    presets: [
-      ['@babel/preset-env', { targets: nodeTarget, useBuiltIns: 'entry' }],
-      '@babel/preset-react',
-      'backpack',
-      'airbnb',
-    ],
+    presets: [['@babel/preset-env', { targets: nodeTarget }], '@babel/preset-react', 'backpack', 'airbnb'],
     plugins: [
       ['@babel/plugin-syntax-typescript', { isTSX: true }],
       '@babel/plugin-syntax-jsx',
@@ -20,10 +15,13 @@ module.exports = (api) => {
       '@babel/plugin-syntax-dynamic-import',
       '@babel/plugin-proposal-export-default-from',
       '@babel/plugin-proposal-export-namespace-from',
+      '@babel/plugin-proposal-optional-chaining',
       '@babel/plugin-transform-react-display-name',
       '@babel/plugin-transform-react-constant-elements',
+      '@babel/plugin-transform-async-to-generator',
       ['lodash', { id: transformModules }],
       'react-require',
+      'react-intl',
       'dynamic-import-node',
       'extract-hoc/babel',
       'react-hot-loader/babel',

@@ -2,7 +2,6 @@
 
 const path = require('path');
 const precss = require('precss');
-const cssnano = require('cssnano');
 const autoprefixer = require('autoprefixer');
 const pleeeaseFilters = require('pleeease-filters');
 const pixrem = require('pixrem');
@@ -10,6 +9,7 @@ const cssMqpacker = require('css-mqpacker');
 const rucksackCss = require('rucksack-css');
 const csswring = require('csswring');
 const lost = require('lost');
+const cssnano = require('cssnano');
 
 const postcssImport = require('postcss-import');
 const postcssUrl = require('postcss-url');
@@ -40,8 +40,14 @@ module.exports = {
   ident: 'postcss',
   parser: customParser,
   plugins: [
-    postcssImport({ root: projectRoot }),
-    postcssUrl({ useHash: true, hashOptions: 'xxhash64' }),
+    postcssFlexBugsFixes(),
+    postcssImport({
+      root: projectRoot,
+    }),
+    postcssUrl({
+      useHash: true,
+      hashOptions: 'xxhash64',
+    }),
     postcssAssets(),
     postcssCustomProperties(),
     postcssCustomMedia(),
@@ -49,7 +55,10 @@ module.exports = {
     postcssCustomSelectors(),
     postcssSelectorNot(),
     postcssSelectorMatches(),
-    postcssCalc(),
+    postcssCalc({
+      mediaQueries: true,
+      selectors: true,
+    }),
     postcssFontVariant(),
     postcssNesting(),
     postcssNested(),
@@ -57,16 +66,28 @@ module.exports = {
     postcssOpacity(),
     postcssPseudoElements(),
     postcssVmin(),
-    postcssPresetEnv({ browsers: 'last 2 versions', stage: 0 }),
-    postcssFlexBugsFixes(),
-    pleeeaseFilters(),
+    postcssPresetEnv({
+      browsers: 'last 2 versions',
+      stage: 0,
+      features: { 'color-mod-function': true },
+    }),
+    pleeeaseFilters({
+      oldIE: true,
+    }),
     pixrem(),
     lost(),
-    autoprefixer({ grid: true, flexbox: true }),
+    autoprefixer({
+      grid: true,
+      flexbox: true,
+    }),
     rucksackCss(),
     csswring(),
     cssMqpacker(),
     precss(),
-    cssnano({ preset: 'default', discardUnused: true }),
+    cssnano({
+      preset: 'default',
+      discardUnused: true,
+      discardComments: { removeAll: true },
+    }),
   ],
 };

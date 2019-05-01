@@ -1,4 +1,4 @@
-import { FunctionComponent, memo } from 'react';
+import { FunctionComponent } from 'react';
 import { connect } from 'react-redux';
 
 import { bindActionCreators, compose, Dispatch } from 'redux';
@@ -21,7 +21,7 @@ const DummyComponent: FunctionComponent<DummyInjected> = (props: DummyInjected) 
     <form className="form">
       <div className="field">
         <div className="control">
-          <h1 className={`title ${dummyStyle.nameTitle}`}>Hello {props.name}!!!</h1>
+          <h1 className={`title ${dummyStyle.nameTitle}`}>Hello {props.name}!!</h1>
           <label htmlFor="name" className="label">
             Type your name bellow:
           </label>
@@ -45,5 +45,4 @@ export default compose<ConnectedComponent<DummyProps, DummyForm>>(
     (dispatch: Dispatch) => bindActionCreators({ ...dummyActions }, dispatch),
   ),
   reduxForm({ form: 'dummyForm' }),
-  memo,
 )(DummyComponent);

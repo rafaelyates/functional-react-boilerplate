@@ -1,5 +1,4 @@
-import { Reducer } from 'redux';
-import { Action, handleActions } from 'redux-actions';
+import { Action, handleActions, ReduxCompatibleReducer } from 'redux-actions';
 
 import { get } from 'lodash/fp';
 
@@ -36,6 +35,6 @@ const actionsRecord: Record<DummyActionTypes, ReducerFunction<DummyState>> = {
   [DummyActionTypes.DUMMY_NAME_SETUP_ACTION]: handleNameSetup,
 };
 
-const dummyReducer: Reducer = handleActions(actionsRecord, initialState);
+const dummyReducer: ReduxCompatibleReducer<DummyState, DummyPayload> = handleActions(actionsRecord, initialState);
 
 export { dummyReducer };
