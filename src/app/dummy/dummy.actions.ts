@@ -19,7 +19,7 @@ const setupName: ActionFunction<ChangeEvent<HTMLInputElement>> = (event: ChangeE
     return compose(
       dispatch,
       createAction(DummyActionTypes.DUMMY_NAME_SETUP_ACTION, (name: string) =>
-        set('data.items[0].name', name, { id: 'MOCKED_DATA' }),
+        set('data.items[0].name', name.toLowerCase(), { id: 'MOCKED_DATA' }),
       ),
     )(event.target.value);
   };

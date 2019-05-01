@@ -1,3 +1,4 @@
+import { startCase } from 'lodash/fp';
 import { createSelector, OutputSelector } from 'reselect';
 
 import { AppState } from '@app/app.models';
@@ -5,12 +6,12 @@ import { DummySelectors } from '@app/dummy/dummy.models';
 import { DummyNameSelector } from '@app/dummy/dummy.types';
 
 /**
- * Creates a selector that returns the dummy name capitalized.
+ * Creates a selector that returns the dummy name with the first letter capitalized.
+ * In the dummy actions we already get the name as lower case, just apply startCase.
  */
 const getCapitalizedName: OutputSelector<AppState, string, DummyNameSelector> = createSelector(
   (state: AppState) => `${state.dummy.name}`,
-  (name: string) =>
-    name.replace(/\w*\S/gi, (value: string) => `${value.charAt(0).toUpperCase()}${value.slice(1).toLowerCase()}`),
+  startCase,
 );
 
 /**

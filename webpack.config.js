@@ -15,6 +15,10 @@ const {
   HotModuleReplacementPlugin,
 } = require('webpack');
 
+const OpenBrowserPlugin = require('open-browser-webpack-plugin');
+const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
+
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const { GenerateSW } = require('workbox-webpack-plugin');
 
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
@@ -33,10 +37,8 @@ const WebpackPwaManifest = require('webpack-pwa-manifest');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
 const CircularDependencyPlugin = require('circular-dependency-plugin');
 const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
-const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin');
 
 const TerserPlugin = require('terser-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
@@ -66,6 +68,9 @@ const entryPoints = ['inline', 'polyfills', 'sw-register', 'styles', 'scripts', 
 const extSuffixes = ['.js', '.jsx', 'mjs', '.ts', '.tsx', 'mts', '.html', '.css', '.sass', '.scss', '.json'];
 
 const excludePath = /node_modules/;
+
+const serveHost = 'localhost';
+const servePort = 4200;
 
 const scssLoaders = (isModular) => [
   {
@@ -105,22 +110,44 @@ const scssLoaders = (isModular) => [
   },
 ];
 
-const imageEnhancer = (isDisabled) => ({
+const imageEnhancer = {
   loader: require.resolve('image-webpack-loader'),
-  options: { disable: isDisabled },
-});
+  options: { disable: isDevMode },
+};
 
-const pwaIcons = (isDevelopment) =>
-  isDevelopment
-    ? []
-    : [
-        {
-          src: path.join(sourcesRoot, 'favicon.ico'),
-          sizes: [16, 24, 32, 64],
-          type: 'image/x-icon',
-          destination: path.join('static', 'icons'),
-        },
-      ];
+const pwaIcons = isDevMode
+  ? []
+  : [
+      {
+        src: path.join(sourcesRoot, 'favicon.ico'),
+        sizes: [16, 24, 32, 64],
+        type: 'image/x-icon',
+        destination: path.join('static', 'icons'),
+      },
+    ];
+
+const environmentPlugins = isDevMode
+  ? [
+      new NamedModulesPlugin(),
+      new HotModuleReplacementPlugin(),
+      new FriendlyErrorsWebpackPlugin(),
+      new OpenBrowserPlugin({
+        url: `http://${serveHost}:${servePort}`,
+      }),
+    ]
+  : [
+      new CleanWebpackPlugin(),
+      new HashedModuleIdsPlugin({
+        hashFunction: 'sha256',
+        hashDigest: 'base64',
+        hashDigestLength: 20,
+      }),
+      new GenerateSW({
+        swDest: 'service-worker.js',
+        precacheManifestFilename: 'static/js/precache-manifest.[manifestHash].js',
+        clientsClaim: true,
+      }),
+    ];
 
 module.exports = {
   bail: !isDevMode,
@@ -140,7 +167,8 @@ module.exports = {
     pathinfo: true,
   },
   devServer: {
-    port: 4200,
+    host: serveHost,
+    port: servePort,
     inline: true,
     compress: true,
     historyApiFallback: true,
@@ -158,6 +186,9 @@ module.exports = {
   resolve: {
     extensions: extSuffixes,
     modules: [sourcesRoot, nodeModules],
+    alias: {
+      'react-dom': isDevMode ? '@hot-loader/react-dom' : 'react-dom',
+    },
     mainFields: ['browser', 'module', 'main'],
     symlinks: true,
     plugins: [
@@ -211,11 +242,11 @@ module.exports = {
       },
       {
         test: /\.(jpg|jpe|gif|png|ico|bmp|jpeg|webp)$/,
-        use: [{ loader: require.resolve('url-loader') }, imageEnhancer(isDevMode)],
+        use: [{ loader: require.resolve('url-loader') }, imageEnhancer],
       },
       {
         test: /\.svg$/,
-        use: [{ loader: require.resolve('svg-url-loader') }, imageEnhancer(isDevMode)],
+        use: [{ loader: require.resolve('svg-url-loader') }, imageEnhancer],
       },
       {
         test: /\.(ani|cur|eot|otf|ttf|woff|woff2)$/,
@@ -268,8 +299,7 @@ module.exports = {
   plugins: [
     new NoEmitOnErrorsPlugin(),
     new CaseSensitivePathsPlugin(),
-    new CleanWebpackPlugin(),
-    new HotModuleReplacementPlugin(),
+    ...environmentPlugins,
     new Dotenv({
       path: isDevMode ? envDev : envProd,
       safe: true,
@@ -320,18 +350,8 @@ module.exports = {
       keepInMemory: isDevMode,
       filename: 'static/json/webpack-assets.json',
     }),
-    new HashedModuleIdsPlugin({
-      hashFunction: 'sha256',
-      hashDigest: 'base64',
-      hashDigestLength: 20,
-    }),
     new ManifestPlugin({
       fileName: 'static/json/asset-manifest.json',
-    }),
-    new GenerateSW({
-      swDest: 'service-worker.js',
-      precacheManifestFilename: 'static/js/precache-manifest.[manifestHash].js',
-      clientsClaim: true,
     }),
     new WebpackPwaManifest({
       filename: 'static/json/manifest.json',
@@ -345,7 +365,7 @@ module.exports = {
       display: 'standalone',
       theme_color: '#000000',
       background_color: '#ffffff',
-      icons: pwaIcons(isDevMode),
+      icons: pwaIcons,
     }),
     new ForkTsCheckerWebpackPlugin({
       async: true,
@@ -372,8 +392,6 @@ module.exports = {
         },
       ],
     }),
-    new NamedModulesPlugin(),
-    new FriendlyErrorsWebpackPlugin(),
   ],
   node: {
     __filename: true,
